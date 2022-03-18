@@ -31,7 +31,7 @@ settings:
    block-dispense-bonemeal: true
    block-villager-damage: true
    block-villager-infection: true
-   block-zombie-villager-cure: false
+   block-zombie-villager-cure: true
 farm-blocks:
 - CACTUS
 - SUGAR_CANE

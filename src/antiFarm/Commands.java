@@ -17,7 +17,7 @@ public class Commands implements CommandExecutor {
 			} else {
 				sender.sendMessage(ChatColor.GREEN + "[antiFarm] Anti AFK farm blocker plugin.");
 				sender.sendMessage(ChatColor.GREEN + "[antiFarm] Author: oTuin");
-				sender.sendMessage(ChatColor.GREEN + "[antiFarm] Version: 1.2");
+				sender.sendMessage(ChatColor.GREEN + "[antiFarm] Version: " + Main.plugin.getDescription().getVersion().toString());
 				sender.sendMessage(ChatColor.GREEN + "[antiFarm] Thanks for using my plugin :)");
 			}
 		}

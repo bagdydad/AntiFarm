@@ -11,8 +11,7 @@ public class Main extends JavaPlugin implements Listener {
 
 	public void onEnable() {
 		plugin = this;
-		registerEvents(this, new AntiPistonFarm(), new AntiVillagerFarm(), new AntiWaterFarm(), new AntiCactusFarm(),
-				new AntiEndermanFarm(), new AntiVillagerBreed(), new AntiMobFarm(), new AntiLightLevelFarm(), new AntiBoneMeal(), new AntiFishFarm(), new AntiWaterlessFarm(), new AntiMobSpawner(), new AntiVillagerTransform(), new AntiVillagerDamage());
+		registerEvents(this, new AntiPistonFarm(), new AntiVillagerFarm(), new AntiWaterFarm(), new AntiCactusFarm(), new AntiEndermanFarm(), new AntiVillagerBreed(), new AntiMobFarm(), new AntiLightLevelFarm(), new AntiBoneMeal(), new AntiFishFarm(), new AntiWaterlessFarm(), new AntiMobSpawner(), new AntiVillagerTransform(), new AntiVillagerDamage());
 		getCommand("antifarm").setExecutor(new Commands());
 		J.configJ.createConfig();
 	}

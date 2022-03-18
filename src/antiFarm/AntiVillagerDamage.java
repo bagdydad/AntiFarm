@@ -27,16 +27,16 @@ public class AntiVillagerDamage implements Listener {
 	public void onDamageEntityByEntity(EntityDamageByEntityEvent event) {
 		if (event.isCancelled()) return;
 		if (event.getEntity() == null) return;
-		if (!J.configJ.config.getBoolean("settings.block-villager-damage")) return;
 		if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
-			if (event.getDamager() == null) {
-				event.setCancelled(true);
-			}
-			if (!event.getDamager().isOp()) {
-				event.setCancelled(true);
+			if (J.configJ.config.getBoolean("settings.block-villager-damage")) {
+				if (event.getDamager() == null) {
+					event.setCancelled(true);
+				}
+				if (!event.getDamager().isOp()) {
+					event.setCancelled(true);
+				}
 			}
 		}
-		
 	}
 
 }
