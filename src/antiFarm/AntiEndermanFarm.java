@@ -14,7 +14,7 @@ public class AntiEndermanFarm implements Listener {
 		if (event.isCancelled()) return;
 		if (event.getEntity() == null) return;
 		if (event.getEntity().getType().equals(EntityType.ENDERMAN)) {
-			if (J.configJ.config.getBoolean("prevent-farms.enderman-harvesting-farms")) {
+			if (J.configJ.config.getBoolean("prevent-farms.enderman-harvesting-farms", true)) {
 				if (J.configJ.config.getStringList("farm-blocks").contains(event.getBlock().getType().toString().toUpperCase())) {
 					event.setCancelled(true);
 				}
@@ -27,7 +27,7 @@ public class AntiEndermanFarm implements Listener {
 		if (event.isCancelled()) return;
 		if (event.getEntity() == null) return;
 		if (event.getEntity().getType().equals(EntityType.ENDERMAN)) {
-			if (J.configJ.config.getBoolean("prevent-farms.enderman-harvesting-farms")) {
+			if (J.configJ.config.getBoolean("prevent-farms.enderman-harvesting-farms", true)) {
 				if (J.configJ.config.getStringList("farm-blocks").contains(event.getItem().getType().toString().toUpperCase())) {
 					event.setCancelled(true);
 				}

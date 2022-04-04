@@ -21,14 +21,16 @@ public class AntiWaterlessFarm implements Listener {
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if (event.isCancelled()) return;
 		if (!event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) return;
-		if (!J.configJ.config.getBoolean("prevent-farms.waterless-farms")) return;
+		
 		BlockData blockData = event.getBlock().getRelative(BlockFace.DOWN).getBlockData();
 		Farmland farmland = (Farmland) blockData;
 		if (farmland.getMoisture() == 0) {
-			for (String checkBlock : J.configJ.config.getStringList("farm-blocks")) {
-				if (event.getBlock().getType().toString().toUpperCase().equals(checkBlock.toUpperCase())) {
-					event.setCancelled(true);
-					break;
+			if (J.configJ.config.getBoolean("prevent-farms.waterless-farms", true)) {
+				for (String checkBlock : J.configJ.config.getStringList("farm-blocks")) {
+					if (event.getBlock().getType().toString().toUpperCase().equals(checkBlock.toUpperCase())) {
+						event.setCancelled(true);
+						break;
+					}
 				}
 			}
 		}
@@ -40,14 +42,15 @@ public class AntiWaterlessFarm implements Listener {
 		if (!event.getItem().getType().equals(Material.BONE_MEAL)) return;
 		if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		if (!event.getClickedBlock().getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) return;
-		if (!J.configJ.config.getBoolean("prevent-farms.waterless-farms")) return;
 		BlockData blockData = event.getClickedBlock().getRelative(BlockFace.DOWN).getBlockData();
 		Farmland farmland = (Farmland) blockData;
 		if (farmland.getMoisture() == 0) {
-			for (String checkBlock : J.configJ.config.getStringList("farm-blocks")) {
-				if (event.getClickedBlock().getType().toString().toUpperCase().equals(checkBlock.toUpperCase())) {
-					event.setCancelled(true);
-					break;
+			if (J.configJ.config.getBoolean("prevent-farms.waterless-farms", true)) {
+				for (String checkBlock : J.configJ.config.getStringList("farm-blocks")) {
+					if (event.getClickedBlock().getType().toString().toUpperCase().equals(checkBlock.toUpperCase())) {
+						event.setCancelled(true);
+						break;
+					}
 				}
 			}
 		}
@@ -61,7 +64,7 @@ public class AntiWaterlessFarm implements Listener {
 			BlockData blockData = event.getBlock().getRelative(BlockFace.DOWN).getBlockData();
 			Farmland farmland = (Farmland) blockData;
 			if (farmland.getMoisture() == 0) {
-				if (J.configJ.config.getBoolean("prevent-farms.waterless-farms")) {
+				if (J.configJ.config.getBoolean("prevent-farms.waterless-farms", true)) {
 					if (J.configJ.config.getStringList("farm-blocks").contains(event.getBlock().getType().toString().toUpperCase())) {
 						event.setCancelled(true);
 						event.getBlock().breakNaturally();
@@ -83,7 +86,7 @@ public class AntiWaterlessFarm implements Listener {
 				if (block.getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) {
 					Farmland farmland = (Farmland) block.getRelative(BlockFace.DOWN).getBlockData();
 					if (farmland.getMoisture() == 0) {
-						if (J.configJ.config.getBoolean("prevent-farms.waterless-farms")) {
+						if (J.configJ.config.getBoolean("prevent-farms.waterless-farms", true)) {
 							if (J.configJ.config.getStringList("farm-blocks").contains(block.getType().toString().toUpperCase())) {
 								event.setCancelled(true);
 							}

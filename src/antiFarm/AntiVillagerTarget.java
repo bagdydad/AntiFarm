@@ -14,7 +14,7 @@ public class AntiVillagerTarget  implements Listener {
 		if (event.getEntity() == null) return;
 		if (event.getTarget() == null) return;
 		if (event.getTarget().getType().equals(EntityType.VILLAGER)) {
-			if (J.configJ.config.getBoolean("villager-settings.prevent-targeting-villager")) {
+			if (J.configJ.config.getBoolean("villager-settings.prevent-targeting-villager", true)) {
 				event.setCancelled(true);
 			}
 		}

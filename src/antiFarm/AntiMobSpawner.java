@@ -14,7 +14,7 @@ public class AntiMobSpawner implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onSpawnerSpawn(SpawnerSpawnEvent event) {
 		if (event.isCancelled()) return;
-		if (J.configJ.config.getBoolean("mob-spawner-settings.prevent-spawn")) {
+		if (J.configJ.config.getBoolean("mob-spawner-settings.prevent-spawn", true)) {
 			event.setCancelled(true);
 		}
 	}
@@ -25,7 +25,7 @@ public class AntiMobSpawner implements Listener {
 		if (event.getPlayer() == null) return;
 		if (event.getBlock() == null) return;
 		if (event.getBlock().getType().equals(Material.SPAWNER)) {
-			if (J.configJ.config.getBoolean("mob-spawner-settings.prevent-break")) {
+			if (J.configJ.config.getBoolean("mob-spawner-settings.prevent-break", true)) {
 				if (event.getPlayer().hasPermission("antifarm.admin") || event.getPlayer().isOp()) {
 					if (!event.getPlayer().isSneaking()) {
 						event.setCancelled(true);
@@ -47,7 +47,7 @@ public class AntiMobSpawner implements Listener {
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			if (event.getClickedBlock().getType().equals(Material.SPAWNER)) {
 				if (event.getItem().getType().toString().contains("SPAWN_EGG")) {
-					if (J.configJ.config.getBoolean("mob-spawner-settings.prevent-transformation")) {
+					if (J.configJ.config.getBoolean("mob-spawner-settings.prevent-transformation", true)) {
 						event.setCancelled(true);
 						event.getPlayer().sendMessage(J.configJ.config.getString("settings.prefix").replaceAll("&", "§") + J.configJ.config.getString("mob-spawner-settings.transformation-warn-message").replaceAll("&", "§"));
 					}

@@ -21,7 +21,7 @@ public class AntiVillagerTransform implements Listener {
 		if (event.getEntity() == null) return;
 		if (!event.getDamager().getType().equals(EntityType.ZOMBIE) && !event.getDamager().getType().equals(EntityType.ZOMBIE_VILLAGER)) return;
 		if (!event.getEntity().getType().equals(EntityType.VILLAGER)) return;
-		if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-infection")) {
+		if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-infection", true)) {
 			Double damage = event.getDamage();
 			event.setDamage(0);
 			LivingEntity villager = (LivingEntity) event.getEntity();
@@ -33,7 +33,7 @@ public class AntiVillagerTransform implements Listener {
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		if (event.getRightClicked().getType().equals(EntityType.ZOMBIE_VILLAGER)) {
 			if (event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.GOLDEN_APPLE) || event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.GOLDEN_APPLE) || event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ENCHANTED_GOLDEN_APPLE) || event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.ENCHANTED_GOLDEN_APPLE)) {
-				if (J.configJ.config.getBoolean("villager-settings.prevent-zombie-villagers-cure")) {
+				if (J.configJ.config.getBoolean("villager-settings.prevent-zombie-villagers-cure", true)) {
 					event.setCancelled(true);
 				}
 			}
@@ -46,7 +46,7 @@ public class AntiVillagerTransform implements Listener {
 			if (effect.getType().equals(PotionEffectType.WEAKNESS)) {
 				for (LivingEntity entity : event.getAffectedEntities()) {
 					if (entity.getType().equals(EntityType.ZOMBIE_VILLAGER)) {
-						if (J.configJ.config.getBoolean("villager-settings.prevent-zombie-villagers-cure")) {
+						if (J.configJ.config.getBoolean("villager-settings.prevent-zombie-villagers-cure", true)) {
 							Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
 							    @Override
 							    public void run() {

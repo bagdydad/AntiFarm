@@ -12,7 +12,7 @@ public class AntiVillagerFarm implements Listener {
 	public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 		if (event.isCancelled()) return;
 		if (!event.getEntity().getType().equals(EntityType.VILLAGER)) return;
-		if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-harvesting-farms")) {
+		if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-harvesting-farms", true)) {
 			event.setCancelled(true);
 		}
 	}

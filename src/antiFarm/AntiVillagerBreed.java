@@ -16,7 +16,7 @@ public class AntiVillagerBreed implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onVillagerPickup(EntityPickupItemEvent event) {
 		if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
-			if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed")) {
+			if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed", true)) {
 				Villager villager = (Villager) event.getEntity();
 				villager.setBreed(false);
 			}
@@ -26,7 +26,7 @@ public class AntiVillagerBreed implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onVillagerDrop(EntityDropItemEvent event) {
 		if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
-			if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed")) {
+			if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed", true)) {
 				Villager villager = (Villager) event.getEntity();
 				villager.setBreed(false);
 			}
@@ -36,7 +36,7 @@ public class AntiVillagerBreed implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onVillagerBreed(EntityBreedEvent event) {
 		if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
-			if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed")) {
+			if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed", true)) {
 				event.setCancelled(true);
 				Villager mother = (Villager) event.getMother();
 				Villager father = (Villager) event.getFather();
@@ -50,7 +50,7 @@ public class AntiVillagerBreed implements Listener {
 	public void onVillagerSpawn(CreatureSpawnEvent event) {
 		if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
 			if (event.getSpawnReason().equals(SpawnReason.BREEDING)) {
-				if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed")) {
+				if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed", true)) {
 					event.setCancelled(true);
 				}
 			}

@@ -21,7 +21,7 @@ public class AntiLightlessFarm implements Listener {
 		if (event.getBlock() == null) return;
 		if (event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) {
 			if (event.getBlock().getLightLevel() <= 7) {
-				if (J.configJ.config.getBoolean("prevent-farms.lightless-farms")) {
+				if (J.configJ.config.getBoolean("prevent-farms.lightless-farms", true)) {
 					if (J.configJ.config.getStringList("farm-blocks").contains(event.getBlock().getType().toString().toUpperCase())) {
 						event.setCancelled(true);
 					}
@@ -38,7 +38,7 @@ public class AntiLightlessFarm implements Listener {
 			if (event.getItem().getType().equals(Material.BONE_MEAL)) {
 				if (event.getClickedBlock().getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) {
 					if (event.getClickedBlock().getLightLevel() <= 7) {
-						if (J.configJ.config.getBoolean("prevent-farms.lightless-farms")) {
+						if (J.configJ.config.getBoolean("prevent-farms.lightless-farms", true)) {
 							if (J.configJ.config.getStringList("farm-blocks").contains(event.getClickedBlock().getType().toString().toUpperCase())) {
 								event.setCancelled(true);
 							}
@@ -55,7 +55,7 @@ public class AntiLightlessFarm implements Listener {
 		if (event.getBlock() == null) return;
 		if (event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) {
 			if (event.getBlock().getLightLevel() <= 7) {
-				if (J.configJ.config.getBoolean("prevent-farms.lightless-farms")) {
+				if (J.configJ.config.getBoolean("prevent-farms.lightless-farms", true)) {
 					if (J.configJ.config.getStringList("farm-blocks").contains(event.getBlock().getType().toString().toUpperCase())) {
 						event.setCancelled(true);
 						event.getBlock().breakNaturally();
@@ -76,7 +76,7 @@ public class AntiLightlessFarm implements Listener {
 				Block block = event.getBlock().getRelative(dispenser.getFacing());
 				if (block.getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) {
 					if (block.getLightLevel() < 7) {
-						if (J.configJ.config.getBoolean("prevent-farms.lightless-farms")) {
+						if (J.configJ.config.getBoolean("prevent-farms.lightless-farms", true)) {
 							if (J.configJ.config.getStringList("farm-blocks").contains(block.getType().toString().toUpperCase())) {
 								event.setCancelled(true);
 							}

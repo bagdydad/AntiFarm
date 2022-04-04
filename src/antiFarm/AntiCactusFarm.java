@@ -21,7 +21,7 @@ public class AntiCactusFarm implements Listener {
 		if (event.isCancelled()) return;
 		if (event.getBlock() == null) return;
 		if (event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.CACTUS)) {
-			if (J.configJ.config.getBoolean("prevent-farms.cactus-farms")) {
+			if (J.configJ.config.getBoolean("prevent-farms.cactus-farms", true)) {
 				Block block = event.getBlock();
 				Location bLoc = block.getLocation();
 				List<Block> domeBlocks = new ArrayList<Block>();
@@ -29,7 +29,7 @@ public class AntiCactusFarm implements Listener {
 				for (Block dBlock : domeBlocks) {
 					if (!(dBlock.getType().equals(Material.CACTUS)) && !(dBlock.getType().equals(Material.AIR)) && !(dBlock.getType().equals(Material.CAVE_AIR))) {
 						event.setCancelled(true);
-						if (J.configJ.config.getBoolean("settings.break-blocks")) {
+						if (J.configJ.config.getBoolean("settings.break-blocks", true)) {
 							for (int i = 0; i < 4; i++) {
 								Block replace = block.getWorld().getBlockAt(bLoc.getBlockX(), bLoc.getBlockY() - i, bLoc.getBlockZ());
 								if (replace.getType().equals(Material.CACTUS) || replace.getType().equals(Material.SAND)) {

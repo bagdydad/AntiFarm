@@ -14,7 +14,7 @@ public class AntiBoneMeal implements Listener {
 		if (event.getItem() == null) return;
 		if (event.getBlock().getType().equals(Material.DISPENSER)) {
 			if (event.getItem().getType().equals(Material.BONE_MEAL)) {
-				if (J.configJ.config.getBoolean("settings.prevent-dispense-bonemeal")) {
+				if (J.configJ.config.getBoolean("settings.prevent-dispense-bonemeal", true)) {
 					event.setCancelled(true);
 				}
 			}

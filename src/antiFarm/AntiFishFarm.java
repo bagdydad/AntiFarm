@@ -22,7 +22,7 @@ public class AntiFishFarm implements Listener {
 	public void onFish(PlayerFishEvent event) {
 		if (event.isCancelled()) return;
 		if (event.getPlayer() == null) return;
-		if (J.configJ.config.getBoolean("anti-fishing.enable")) {
+		if (J.configJ.config.getBoolean("anti-fishing.enable", true)) {
 			if (clearHashMapsTimer == null) {
 				clearHashMapsTimer = LocalDateTime.now();
 			} else if (Duration.between((LocalDateTime) clearHashMapsTimer, (LocalDateTime) LocalDateTime.now()).toHours() >= 2) {
@@ -34,7 +34,7 @@ public class AntiFishFarm implements Listener {
 			Chunk chunk = player.getLocation().getChunk();
 			String key = player.getName() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ());
 			if (fishTime.get(key) != null) {
-				if (Duration.between((LocalDateTime) fishTime.get(key), (LocalDateTime) LocalDateTime.now()).toSeconds() >= J.configJ.config.getInt("anti-fishing.chunk-cooldown")) {
+				if (Duration.between((LocalDateTime) fishTime.get(key), (LocalDateTime) LocalDateTime.now()).toSeconds() >= J.configJ.config.getInt("anti-fishing.chunk-cooldown", 600)) {
 					fishCount.remove(key);
 					fishTime.remove(key);
 				}
@@ -49,16 +49,16 @@ public class AntiFishFarm implements Listener {
 				}
 				fishCount.replace(key, value, value + 1);
 			}
-			if (value >= J.configJ.config.getInt("anti-fishing.caught-fish-per-chunk")) {
+			if (value >= J.configJ.config.getInt("anti-fishing.caught-fish-per-chunk", 10)) {
 				event.setCancelled(true);
 				fishCount.replace(key, fishCount.get(key), value + 1);
-				if (J.configJ.config.getBoolean("anti-fishing.warn")) {
+				if (J.configJ.config.getBoolean("anti-fishing.warn", true)) {
 					player.sendMessage(J.configJ.config.getString("settings.prefix").replaceAll("&", "§") + J.configJ.config.getString("anti-fishing.warn-msg").replaceAll("&", "§"));
 				}
-				if (J.configJ.config.getBoolean("anti-fishing.kick")) {
-					if (value >= (J.configJ.config.getInt("anti-fishing.caught-fish-per-chunk") + 10)) {
+				if (J.configJ.config.getBoolean("anti-fishing.kick", false)) {
+					if (value >= (J.configJ.config.getInt("anti-fishing.caught-fish-per-chunk", 10) + 10)) {
 						player.kickPlayer(J.configJ.config.getString("settings.prefix").replaceAll("&", "§") + J.configJ.config.getString("anti-fishing.kick-msg").replaceAll("&", "§"));
-						fishCount.replace(key, fishCount.get(key), J.configJ.config.getInt("anti-fishing.caught-fish-per-chunk"));
+						fishCount.replace(key, fishCount.get(key), J.configJ.config.getInt("anti-fishing.caught-fish-per-chunk", 10));
 					}
 				}
 			}

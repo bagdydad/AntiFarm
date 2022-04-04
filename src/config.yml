@@ -38,11 +38,16 @@ prevent-farms:
    enderman-harvesting-farms: true
    lightless-farms: true
    waterless-farms: true
+   snow-farms: true
 
 prevent-mob-farms:
    enable: true
    whitelist:
    - BAT
+
+prevent-raid-farms:
+   enable: true
+   cooldown: 600
 
 farm-blocks:
 - CACTUS

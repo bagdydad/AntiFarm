@@ -16,7 +16,7 @@ public class AntiWaterFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockFromTo(BlockFromToEvent event) {
 		if (event.getBlock().getType().equals(Material.WATER)) {
-			if (J.configJ.config.getBoolean("prevent-farms.water-harvesting-farms")) {
+			if (J.configJ.config.getBoolean("prevent-farms.water-harvesting-farms", true)) {
 				if (J.configJ.config.getStringList("farm-blocks").contains(event.getBlock().getRelative(event.getBlock().getFace(event.getToBlock())).getType().toString().toUpperCase())) {
 					event.setCancelled(true);
 				}
@@ -27,7 +27,7 @@ public class AntiWaterFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 		if (event.getBucket().equals(Material.WATER_BUCKET)) {
-			if (J.configJ.config.getBoolean("prevent-farms.water-harvesting-farms")) {
+			if (J.configJ.config.getBoolean("prevent-farms.water-harvesting-farms", true)) {
 				if (J.configJ.config.getStringList("farm-blocks").contains(event.getBlockClicked().getRelative(event.getBlockFace()).getType().toString().toUpperCase())) {
 					event.setCancelled(true);
 				}
@@ -42,7 +42,7 @@ public class AntiWaterFarm implements Listener {
 				Dispenser dispenser = (Dispenser) event.getBlock().getBlockData();
 				Block block = event.getBlock().getRelative(dispenser.getFacing());
 				if (block.getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) {
-					if (J.configJ.config.getBoolean("prevent-farms.water-harvesting-farms")) {
+					if (J.configJ.config.getBoolean("prevent-farms.water-harvesting-farms", true)) {
 						if (J.configJ.config.getStringList("farm-blocks").contains(block.getType().toString().toUpperCase())) {
 							event.setCancelled(true);
 						}

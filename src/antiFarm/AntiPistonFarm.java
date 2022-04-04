@@ -18,7 +18,7 @@ public class AntiPistonFarm extends Config implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonExtend(BlockPistonExtendEvent event) {
 		if (event.isCancelled()) return;
-		if (J.configJ.config.getBoolean("prevent-farms.piston-farms")) {
+		if (J.configJ.config.getBoolean("prevent-farms.piston-farms", true)) {
 			Block piston = event.getBlock();
 			BlockFace direction = event.getDirection();
 			List<Block> pistonBlocks = new ArrayList<Block>();
@@ -34,7 +34,7 @@ public class AntiPistonFarm extends Config implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonRetract(BlockPistonRetractEvent event) {
 		if (event.isCancelled()) return;
-		if (J.configJ.config.getBoolean("prevent-farms.piston-farms")) {
+		if (J.configJ.config.getBoolean("prevent-farms.piston-farms", true)) {
 			Block piston = event.getBlock();
 			BlockFace direction = event.getDirection();
 			List<Block> pistonBlocks = new ArrayList<Block>();
@@ -51,7 +51,7 @@ public class AntiPistonFarm extends Config implements Listener {
 		for (Block block : pistonBlocks) {
 			for (String checkBlock : J.configJ.config.getStringList("farm-blocks")) {
 				if (block.getType().toString().toUpperCase().equals(checkBlock.toUpperCase())) {
-					if (J.configJ.config.getBoolean("settings.break-pistons")) {
+					if (J.configJ.config.getBoolean("settings.break-pistons", true)) {
 						piston.breakNaturally();
 						piston.setType(Material.AIR);
 					}
@@ -61,7 +61,7 @@ public class AntiPistonFarm extends Config implements Listener {
 			if (block.getType().equals(Material.GRASS_BLOCK) || block.getType().equals(Material.SAND) || block.getType().equals(Material.RED_SAND) || block.getType().equals(Material.FARMLAND) || block.getType().equals(Material.SOUL_SAND) || block.getType().equals(Material.END_STONE)) {
 				if (!block.getRelative(BlockFace.UP).getType().equals(Material.AIR) && !block.getRelative(BlockFace.UP).getType().equals(block.getType())) {
 					if (J.configJ.config.getStringList("farm-blocks").contains(block.getRelative(BlockFace.UP).getType().toString())) {
-						if (J.configJ.config.getBoolean("settings.break-pistons")) {
+						if (J.configJ.config.getBoolean("settings.break-pistons", true)) {
 							piston.breakNaturally();
 							piston.setType(Material.AIR);
 						}
@@ -71,7 +71,7 @@ public class AntiPistonFarm extends Config implements Listener {
 			} else if (block.getType().equals(Material.JUNGLE_LOG)) {
 				for (String checkBlock : J.configJ.config.getStringList("farm-blocks")) {
 					if (block.getRelative(BlockFace.EAST).getType().toString().equals(checkBlock.toUpperCase()) || block.getRelative(BlockFace.NORTH).getType().toString().equals(checkBlock.toUpperCase()) || block.getRelative(BlockFace.SOUTH).getType().toString().equals(checkBlock.toUpperCase()) || block.getRelative(BlockFace.WEST).getType().toString().equals(checkBlock.toUpperCase())) {
-						if (J.configJ.config.getBoolean("settings.break-pistons")) {
+						if (J.configJ.config.getBoolean("settings.break-pistons", true)) {
 							piston.breakNaturally();
 							piston.setType(Material.AIR);
 						}
@@ -82,7 +82,7 @@ public class AntiPistonFarm extends Config implements Listener {
 			if (J.configJ.config.getBoolean("prevent-farms.cactus-farms")) {
 				Block checkBlock = block.getRelative(direction);
 				if (checkBlock.getRelative(BlockFace.NORTH).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.SOUTH).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.EAST).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.WEST).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.DOWN).getType().equals(Material.CACTUS)) {
-					if (J.configJ.config.getBoolean("settings.break-pistons")) {
+					if (J.configJ.config.getBoolean("settings.break-pistons", true)) {
 						piston.breakNaturally();
 						piston.setType(Material.AIR);
 					}
