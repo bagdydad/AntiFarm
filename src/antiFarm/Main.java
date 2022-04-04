@@ -14,9 +14,6 @@ public class Main extends JavaPlugin implements Listener {
 		registerEvents(this, new AntiPistonFarm(), new AntiVillagerFarm(), new AntiWaterFarm(), new AntiCactusFarm(), new AntiEndermanFarm(), new AntiVillagerBreed(), new AntiMobFarm(), new AntiLightlessFarm(), new AntiBoneMeal(), new AntiFishFarm(), new AntiWaterlessFarm(), new AntiMobSpawner(), new AntiVillagerTransform(), new AntiVillagerTarget(), new AntiVillageGuard());
 		getCommand("antifarm").setExecutor(new Commands());
 		J.configJ.createConfig();
-        Metrics metrics = new Metrics(this, 14827);
-        metrics.addCustomChart(new Metrics.SimplePie("1", () -> "Test"));
-	}
 	
 	public void onDisable() {
 		plugin = null;
