@@ -1,28 +1,56 @@
 package antiFarm;
 
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityBreedEvent;
+import org.bukkit.event.entity.EntityDropItemEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 
 public class AntiVillagerBreed implements Listener {
 	
-	@EventHandler
-	public void onEntityBreed(EntityBreedEvent event) {
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onVillagerPickup(EntityPickupItemEvent event) {
 		if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
-			if (J.configJ.config.getBoolean("disable-mob-farms.villager-breed")) {
-				event.setExperience(0);
+			if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed")) {
+				Villager villager = (Villager) event.getEntity();
+				villager.setBreed(false);
 			}
 		}
 	}
 	
-	@EventHandler
-	public void onCreatureSpawn(CreatureSpawnEvent event) {
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onVillagerDrop(EntityDropItemEvent event) {
+		if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
+			if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed")) {
+				Villager villager = (Villager) event.getEntity();
+				villager.setBreed(false);
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onVillagerBreed(EntityBreedEvent event) {
+		if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
+			if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed")) {
+				event.setCancelled(true);
+				Villager mother = (Villager) event.getMother();
+				Villager father = (Villager) event.getFather();
+				mother.setBreed(false);
+				father.setBreed(false);
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onVillagerSpawn(CreatureSpawnEvent event) {
 		if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
 			if (event.getSpawnReason().equals(SpawnReason.BREEDING)) {
-				if (J.configJ.config.getBoolean("disable-mob-farms.villager-breed")) {
+				if (J.configJ.config.getBoolean("villager-settings.prevent-villagers-breed")) {
 					event.setCancelled(true);
 				}
 			}

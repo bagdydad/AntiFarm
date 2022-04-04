@@ -1,22 +1,10 @@
-disable-farms:
-   water-farm: true
-   piston-farm: true
-   cactus-farm: true
-   enderman-farm: true
-   villager-farm: true
-   light-level-farm: true
-   waterless-farm: true
-disable-mob-farms:
-   all-mob-farms: true
-   iron-farm: true
-   gold-farm: true
-   villager-breed: true
-disable-mob-spawner:
-   spawn-prevent: true
-   break-prevent: true
-   player-warn-message: "&cYou can't break mob spawner, this action blocked on server."
-   admin-warn-message: "&cMob spawner break is disabled on server. But you are an admin and if you want to break, you can. (Sneak + Attack)"
-disable-fish-farms:
+settings:
+   prefix: "&a[AntiFarm]&r "
+   break-pistons: true
+   break-blocks: true
+   prevent-dispense-bonemeal: true
+
+anti-fishing:
    enable: true
    warn: true
    warn-msg: "&cYou have reached the fishing limit in the same area, go to different areas to continue fishing!"
@@ -24,28 +12,60 @@ disable-fish-farms:
    kick-msg: "&cYou were kicked from the server due to afk fish farm!"
    caught-fish-per-chunk: 10
    chunk-cooldown: 600
-settings:
-   prefix: "&a[antiFarm]&r "
-   break-pistons: true
-   break-farm-blocks: true
-   block-dispense-bonemeal: true
-   block-villager-damage: true
-   block-villager-infection: true
-   block-zombie-villager-cure: true
+
+mob-spawner-settings:
+   prevent-spawn: true
+   prevent-break: true
+   prevent-transformation: true
+   player-warn-message: "&cYou can't break mob spawner, this action blocked on server!"
+   admin-warn-message: "&cMob spawner break is disabled on server. But you are an admin and if you want to break, you can. (Sneak + Attack)"
+   transformation-warn-message: "&cYou can't convert mob spawner, this action is blocked on server!"
+
+villager-settings:
+   prevent-villagers-harvesting-farms: true
+   prevent-villagers-breed: true
+   prevent-villagers-infection: true
+   prevent-zombie-villagers-cure: true
+   prevent-targeting-villager: true
+   prevent-golem-spawning:
+      village-defense: true
+      village-raids: true
+
+prevent-farms:
+   cactus-farms: true
+   piston-farms: true
+   water-harvesting-farms: true
+   enderman-harvesting-farms: true
+   lightless-farms: true
+   waterless-farms: true
+
+prevent-mob-farms:
+   enable: true
+   whitelist:
+   - BAT
+
 farm-blocks:
 - CACTUS
 - SUGAR_CANE
+- SUGAR_CANE_BLOCK
+- REEDS
 - BAMBOO
 - MELON
 - MELON_STEM
+- MELON_BLOCK
 - ATTACHED_MELON_STEM
 - PUMPKIN
 - PUMPKIN_STEM
 - ATTACHED_PUMKIN_STEM
 - WHEAT
+- CROPS
+- CARROT
 - CARROTS
+- POTATO
 - POTATOES
+- BEETROOT
 - BEETROOTS
+- BEETROOT_BLOCK
 - SWEET_BERRY_BUSH
 - COCOA
 - CAVE_VINES
