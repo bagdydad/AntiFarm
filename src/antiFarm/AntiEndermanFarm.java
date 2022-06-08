@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 
+import core.J;
+
 public class AntiEndermanFarm implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

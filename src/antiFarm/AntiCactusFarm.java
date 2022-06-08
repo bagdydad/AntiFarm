@@ -13,6 +13,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
+
+import core.J;
+import core.Main;
 
 public class AntiCactusFarm implements Listener {
 	
@@ -44,6 +48,36 @@ public class AntiCactusFarm implements Listener {
 							}
 						}
 						break;
+					}
+				}
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onBlockPhysics(BlockPhysicsEvent event) {
+		if (event.isCancelled()) return;
+		if (event.getSourceBlock().getType().equals(Material.SAND) || event.getSourceBlock().getType().equals(Material.RED_SAND) || event.getSourceBlock().getType().toString().contains("CONCRETE_POWDER") || event.getSourceBlock().getType().equals(Material.DRAGON_EGG)) {
+			if (event.getBlock().getType().equals(Material.CACTUS)) {
+				if (J.configJ.config.getBoolean("prevent-farms.cactus-farms", true)) {
+					event.setCancelled(true);
+					event.getSourceBlock().breakNaturally();
+					event.getSourceBlock().setType(Material.AIR);
+					if (J.configJ.config.getBoolean("settings.break-blocks", true)) {
+						Block block = event.getBlock();
+						Location bLoc = block.getLocation();
+						for (int i = 0; i < 4; i++) {
+							Block replace = block.getWorld().getBlockAt(bLoc.getBlockX(), bLoc.getBlockY() - i, bLoc.getBlockZ());
+							if (replace.getType().equals(Material.CACTUS) || replace.getType().equals(Material.SAND)) {
+								Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable() {
+								    @Override
+								    public void run() {
+								    	replace.breakNaturally();
+								    	replace.setType(Material.AIR);
+								    }
+								}, 2);
+							}
+						}
 					}
 				}
 			}

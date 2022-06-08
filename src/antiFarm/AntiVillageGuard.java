@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
+import core.J;
+
 public class AntiVillageGuard implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

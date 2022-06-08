@@ -6,6 +6,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
 
+import core.J;
+
 public class AntiVillagerTarget  implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

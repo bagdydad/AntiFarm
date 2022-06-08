@@ -9,6 +9,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import core.J;
+
 public class AntiMobSpawner implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

@@ -12,12 +12,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 
+import core.J;
+
 public class AntiFishFarm implements Listener {
 
 	HashMap<String, Integer> fishCount = new HashMap<String, Integer>();
 	HashMap<String, LocalDateTime> fishTime = new HashMap<String, LocalDateTime>();
 	LocalDateTime clearHashMapsTimer;
-
+	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onFish(PlayerFishEvent event) {
 		if (event.isCancelled()) return;

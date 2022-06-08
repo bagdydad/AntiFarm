@@ -38,7 +38,8 @@ prevent-farms:
    enderman-harvesting-farms: true
    lightless-farms: true
    waterless-farms: true
-   snow-farms: true
+   snowball-farms: true
+   berry-farms: true
 
 prevent-mob-farms:
    enable: true

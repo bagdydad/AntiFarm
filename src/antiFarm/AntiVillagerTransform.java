@@ -13,6 +13,9 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import core.J;
+import core.Main;
+
 public class AntiVillagerTransform implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

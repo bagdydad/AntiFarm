@@ -6,6 +6,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
 
+import core.J;
+
 public class AntiBoneMeal implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

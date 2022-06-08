@@ -13,6 +13,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 
+import configUpdater.Config;
+import core.J;
+
 public class AntiPistonFarm extends Config implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

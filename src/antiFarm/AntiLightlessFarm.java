@@ -13,6 +13,8 @@ import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import core.J;
+
 public class AntiLightlessFarm implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
