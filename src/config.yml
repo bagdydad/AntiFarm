@@ -1,5 +1,7 @@
 settings:
    prefix: "&a[AntiFarm]&r "
+   bstats: true
+   update-check: true
    break-pistons: true
    break-blocks: true
    prevent-dispense-bonemeal: true
@@ -40,6 +42,7 @@ prevent-farms:
    waterless-farms: true
    snowball-farms: true
    berry-farms: true
+   zerotick-farms: true
 
 prevent-mob-farms:
    enable: true

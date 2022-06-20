@@ -23,6 +23,7 @@ import antiFarm.AntiVillagerTarget;
 import antiFarm.AntiVillagerTransform;
 import antiFarm.AntiWaterFarm;
 import antiFarm.AntiWaterlessFarm;
+import antiFarm.AntiZeroTickFarm;
 import metrics.Metrics;
 import updateChecker.UpdateChecker;
 
@@ -32,12 +33,16 @@ public class Main extends JavaPlugin implements Listener {
 	
 	public void onEnable() {
 		plugin = this;
-		registerEvents(this, new AntiPistonFarm(), new AntiVillagerFarm(), new AntiWaterFarm(), new AntiCactusFarm(), new AntiEndermanFarm(), new AntiVillagerBreed(), new AntiMobFarm(), new AntiLightlessFarm(), new AntiBoneMeal(), new AntiFishFarm(), new AntiWaterlessFarm(), new AntiMobSpawner(), new AntiVillagerTransform(), new AntiVillagerTarget(), new AntiVillageGuard(), new AntiSnowballFarm(), new AntiRaidFarm(), new AntiBerryFarm());
 		J.configJ.loadConfig();
+		registerEvents(Main.plugin, new AntiPistonFarm(), new AntiVillagerFarm(), new AntiWaterFarm(), new AntiCactusFarm(), new AntiEndermanFarm(), new AntiVillagerBreed(), new AntiMobFarm(), new AntiLightlessFarm(), new AntiBoneMeal(), new AntiFishFarm(), new AntiWaterlessFarm(), new AntiMobSpawner(), new AntiVillagerTransform(), new AntiVillagerTarget(), new AntiVillageGuard(), new AntiSnowballFarm(), new AntiRaidFarm(), new AntiBerryFarm(), new AntiZeroTickFarm());
 		getCommand("antifarm").setExecutor(new Commands());
-        @SuppressWarnings("unused")
-		Metrics metrics = new Metrics(this, 14827);
-        updateCheck();
+        if (J.configJ.config.getBoolean("settings.bstats", true)) {
+        	@SuppressWarnings("unused")
+        	Metrics metrics = new Metrics(this, 14827);
+        }
+        if (J.configJ.config.getBoolean("settings.update-check", true)) {
+        	 updateCheck();
+        }
 	}
 	
 	public void onDisable() {
