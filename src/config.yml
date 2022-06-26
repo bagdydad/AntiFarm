@@ -48,6 +48,8 @@ prevent-mob-farms:
    enable: true
    whitelist:
    - BAT
+   blacklist:
+   - All
 
 prevent-raid-farms:
    enable: true

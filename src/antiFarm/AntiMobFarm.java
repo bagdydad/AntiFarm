@@ -16,8 +16,10 @@ public class AntiMobFarm implements Listener {
 		if (event.getEntity().getKiller() == null) {
 			if (!(event.getEntity() instanceof Player) && !(event.getEntity() instanceof ArmorStand)) {
 				if (J.configJ.config.getBoolean("prevent-mob-farms.enable", true)) {
-					if (!J.configJ.config.getStringList("prevent-mob-farms.whitelist").contains(event.getEntity().getType().toString().toUpperCase())) {
-						event.getDrops().clear();
+					if (J.configJ.config.getStringList("prevent-mob-farms.blacklist").contains(event.getEntity().getType().toString().toUpperCase()) || J.configJ.config.getStringList("prevent-mob-farms.blacklist").contains("All")) {
+						if (!J.configJ.config.getStringList("prevent-mob-farms.whitelist").contains(event.getEntity().getType().toString().toUpperCase())) {
+							event.getDrops().clear();
+						}
 					}
 				}
 			}

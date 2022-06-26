@@ -1,6 +1,7 @@
 package antiFarm;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,6 +18,9 @@ public class AntiBerryFarm implements Listener {
 			if (event.getBlock().getType().equals(Material.SWEET_BERRY_BUSH)) {
 				if (J.configJ.config.getBoolean("prevent-farms.berry-farms", true)) {
 					event.setCancelled(true);
+					Ageable sweetBerryBush = (Ageable) event.getBlock().getBlockData();
+					sweetBerryBush.setAge(1);
+					event.getBlock().setBlockData(sweetBerryBush);
 				}
 			}
 		}
