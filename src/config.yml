@@ -4,7 +4,6 @@ settings:
    update-check: true
    break-pistons: true
    break-blocks: true
-   prevent-dispense-bonemeal: true
 
 anti-fishing:
    enable: true
@@ -24,6 +23,7 @@ mob-spawner-settings:
    transformation-warn-message: "&cYou can't convert mob spawner, this action is blocked on server!"
 
 villager-settings:
+   prevent-villagers-profession-change: true
    prevent-villagers-harvesting-farms: true
    prevent-villagers-breed: true
    prevent-villagers-infection: true
@@ -33,16 +33,20 @@ villager-settings:
       village-defense: true
       village-raids: true
 
-prevent-farms:
-   cactus-farms: true
-   piston-farms: true
-   water-harvesting-farms: true
-   enderman-harvesting-farms: true
-   lightless-farms: true
-   waterless-farms: true
-   snowball-farms: true
-   berry-farms: true
-   zerotick-farms: true
+farms-settings:
+   prevent-cactus-farms: true
+   prevent-piston-farms: true
+   prevent-water-harvesting-farms: true
+   prevent-enderman-harvesting-farms: true
+   prevent-lightless-farms: true
+   prevent-waterless-farms: true
+   prevent-snowball-farms: true
+   prevent-berry-farms: true
+   prevent-zerotick-farms: true
+
+dispenser-settings:
+   prevent-bonemeal: true
+   prevent-shearing: true
 
 prevent-mob-farms:
    enable: true
@@ -54,6 +58,10 @@ prevent-mob-farms:
 prevent-raid-farms:
    enable: true
    cooldown: 600
+   
+prevent-froglight-farms:
+   enable: true
+   count: 5
 
 farm-blocks:
 - CACTUS
