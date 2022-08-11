@@ -81,30 +81,30 @@ public class AntiPistonFarm implements Listener {
 	private boolean checkPistonBlocks(Block piston, BlockFace direction, List<Block> pistonBlocks) {
 
 		for (Block block : pistonBlocks) {
+
 			for (String checkBlock : config.getStringList("farm-blocks")) {
 				if (block.getType().toString().toUpperCase().equals(checkBlock.toUpperCase())) {
 					return true;
 				}
 			}
-			if (block.getType().equals(Material.GRASS_BLOCK) || block.getType().equals(Material.SAND) || block.getType().equals(Material.RED_SAND) || block.getType().equals(Material.FARMLAND) || block.getType().equals(Material.SOUL_SAND) || block.getType().equals(Material.END_STONE)) {
-				if (!block.getRelative(BlockFace.UP).getType().equals(Material.AIR) && !block.getRelative(BlockFace.UP).getType().equals(block.getType())) {
-					if (config.getStringList("farm-blocks").contains(block.getRelative(BlockFace.UP).getType().toString())) {
-						return true;
-					}
-				}
-			} else if (block.getType().equals(Material.JUNGLE_LOG)) {
-				for (String checkBlock : config.getStringList("farm-blocks")) {
-					if (block.getRelative(BlockFace.EAST).getType().toString().equals(checkBlock.toUpperCase()) || block.getRelative(BlockFace.NORTH).getType().toString().equals(checkBlock.toUpperCase()) || block.getRelative(BlockFace.SOUTH).getType().toString().equals(checkBlock.toUpperCase()) || block.getRelative(BlockFace.WEST).getType().toString().equals(checkBlock.toUpperCase())) {
+
+			if (config.getStringList("farm-blocks").contains("COCOA")) {
+				if (block.getType().equals(Material.JUNGLE_LOG)) {
+					if (block.getRelative(BlockFace.EAST).getType().equals(Material.COCOA) || block.getRelative(BlockFace.NORTH).getType().equals(Material.COCOA) || block.getRelative(BlockFace.SOUTH).getType().equals(Material.COCOA) || block.getRelative(BlockFace.WEST).getType().equals(Material.COCOA)) {
 						return true;
 					}
 				}
 			}
+
 			if (config.getBoolean("farms-settings.prevent-cactus-farms")) {
-				Block checkBlock = block.getRelative(direction);
-				if (checkBlock.getRelative(BlockFace.NORTH).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.SOUTH).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.EAST).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.WEST).getType().equals(Material.CACTUS)) {
-					return true;
+				if (config.getStringList("farm-blocks").contains("CACTUS")) {
+					Block checkBlock = block.getRelative(direction);
+					if (checkBlock.getRelative(BlockFace.NORTH).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.SOUTH).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.EAST).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.WEST).getType().equals(Material.CACTUS)) {
+						return true;
+					}
 				}
 			}
+
 		}
 
 		return false;

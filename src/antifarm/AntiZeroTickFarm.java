@@ -28,7 +28,6 @@ public class AntiZeroTickFarm implements Listener {
 	private void onPistonExtend(BlockPistonExtendEvent event) {
 
 		if (event.isCancelled()) return;
-		if (config.getBoolean("farms-settings.prevent-piston-farms", true)) return;
 		if (!config.getBoolean("farms-settings.prevent-zerotick-farms", true)) return;
 
 		Block piston = event.getBlock();
@@ -56,7 +55,6 @@ public class AntiZeroTickFarm implements Listener {
 	private void onPistonRetract(BlockPistonRetractEvent event) {
 
 		if (event.isCancelled()) return;
-		if (config.getBoolean("farms-settings.prevent-piston-farms", true)) return;
 		if (!config.getBoolean("farms-settings.prevent-zerotick-farms", true)) return;
 
 		Block piston = event.getBlock();
@@ -83,11 +81,9 @@ public class AntiZeroTickFarm implements Listener {
 	private boolean checkPistonBlocks(Block piston, BlockFace direction, List<Block> pistonBlocks) {
 
 		for (Block block : pistonBlocks) {
-			if (block.getType().equals(Material.GRASS_BLOCK) || block.getType().equals(Material.SAND) || block.getType().equals(Material.RED_SAND) || block.getType().equals(Material.FARMLAND) || block.getType().equals(Material.SOUL_SAND) || block.getType().equals(Material.END_STONE)) {
-				if (!block.getRelative(BlockFace.UP).getType().equals(Material.AIR) && !block.getRelative(BlockFace.UP).getType().equals(block.getType())) {
-					if (config.getStringList("farm-blocks").contains(block.getRelative(BlockFace.UP).getType().toString())) {
-						return true;
-					}
+			if (config.getStringList("farmland-blocks").contains(block.getType().toString().toUpperCase())) {
+				if (config.getStringList("farm-blocks").contains(block.getRelative(BlockFace.UP).getType().toString())) {
+					return true;
 				}
 			}
 		}

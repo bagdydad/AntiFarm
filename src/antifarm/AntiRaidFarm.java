@@ -1,15 +1,15 @@
 package antifarm;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.raid.RaidTriggerEvent;
-
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 import configuration.Configuration;
 import core.AntiFarmPlugin;
@@ -22,7 +22,7 @@ public class AntiRaidFarm implements Listener {
 		this.config = plugin.getConfig();
 	}
 
-	private Cache<UUID, Long> raidTimer;
+	private HashMap<UUID, LocalDateTime> raidTimer = new HashMap<UUID, LocalDateTime>();
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onRaidTrigger(RaidTriggerEvent event) {
@@ -31,14 +31,15 @@ public class AntiRaidFarm implements Listener {
 		if (event.getPlayer() == null) return;
 		if (!config.getBoolean("prevent-raid-farms.enable", true)) return;
 
-		if (raidTimer == null) {
-			raidTimer = CacheBuilder.newBuilder().expireAfterWrite(config.getInt("prevent-raid-farms.cooldown", 600), TimeUnit.SECONDS).build();
-		}
+		Player player = event.getPlayer();
+		UUID uuid = player.getUniqueId();
 
-		if (raidTimer.getIfPresent(event.getPlayer().getUniqueId()) != null) {
-			event.setCancelled(true);
+		if (raidTimer.get(uuid) == null) {
+			raidTimer.put(uuid, LocalDateTime.now());
+		} else if (Duration.between(raidTimer.get(uuid), LocalDateTime.now()).toSeconds() >= config.getInt("prevent-raid-farms.cooldown", 600)) {
+			raidTimer.remove(uuid);
 		} else {
-			raidTimer.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+			event.setCancelled(true);
 		}
 
 	}
