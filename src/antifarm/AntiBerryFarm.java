@@ -25,6 +25,8 @@ public class AntiBerryFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getBlock() == null || event.getEntity() == null) return;
 		if (!event.getEntity().getType().equals(EntityType.FOX)) return;
 		if (!event.getBlock().getType().equals(Material.SWEET_BERRY_BUSH)) return;

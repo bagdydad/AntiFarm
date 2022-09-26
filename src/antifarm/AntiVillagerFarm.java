@@ -20,6 +20,8 @@ public class AntiVillagerFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
 		if (event.isCancelled()) return;
 		if (!event.getEntity().getType().equals(EntityType.VILLAGER)) return;
 		if (!config.getBoolean("villager-settings.prevent-villagers-harvesting-farms", true)) return;

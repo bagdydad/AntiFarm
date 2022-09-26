@@ -36,6 +36,8 @@ public class AntiFroglightFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onEntityDeath(EntityDeathEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
 		if (event.getEntity() == null || event.getEntity().getKiller() != null) return;
 		if (!event.getEntity().getType().equals(EntityType.MAGMA_CUBE)) return;
 		if (!config.getBoolean("prevent-froglight-farms.enable")) return;
@@ -86,6 +88,8 @@ public class AntiFroglightFarm implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onDamage(EntityDamageByEntityEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getEntity() == null || event.getDamager() == null) return;
 

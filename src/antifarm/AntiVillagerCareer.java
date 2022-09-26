@@ -21,6 +21,8 @@ public class AntiVillagerCareer implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onVillagerCareerChange(VillagerCareerChangeEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getEntity() == null || event.getReason() == null) return;
 		if (!event.getReason().equals(ChangeReason.EMPLOYED)) return;
 		if (!config.getBoolean("villager-settings.prevent-villagers-profession-change", true)) return;

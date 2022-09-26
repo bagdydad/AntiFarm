@@ -27,6 +27,8 @@ public class AntiPistonFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPistonExtend(BlockPistonExtendEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getBlock() == null || event.getDirection() == null) return;
 		if (!config.getBoolean("farms-settings.prevent-piston-farms", true)) return;
 
@@ -53,6 +55,8 @@ public class AntiPistonFarm implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPistonRetract(BlockPistonRetractEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getBlock() == null || event.getDirection() == null) return;
 		if (!config.getBoolean("farms-settings.prevent-piston-farms", true)) return;

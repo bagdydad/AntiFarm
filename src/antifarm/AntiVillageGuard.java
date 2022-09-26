@@ -21,6 +21,8 @@ public class AntiVillageGuard implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onCreatureSpawn(CreatureSpawnEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getEntity() == null) return;
 		if (!event.getEntity().getType().equals(EntityType.IRON_GOLEM)) return;
 

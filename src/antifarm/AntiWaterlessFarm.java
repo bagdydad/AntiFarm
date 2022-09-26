@@ -29,6 +29,8 @@ public class AntiWaterlessFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockPlace(BlockPlaceEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getBlock() == null || event.getPlayer() == null) return;
 		if (!event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) return;
 
@@ -45,6 +47,8 @@ public class AntiWaterlessFarm implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPlayerInteract(PlayerInteractEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getPlayer().getWorld().getName())) return;
 
 		if (event.getPlayer() == null || event.getAction() == null || event.getClickedBlock() == null || event.getItem() == null) return;
 		if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
@@ -65,6 +69,8 @@ public class AntiWaterlessFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockGrow(BlockGrowEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getBlock() == null) return;
 		if (!event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) return;
 
@@ -83,6 +89,8 @@ public class AntiWaterlessFarm implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onDispense(BlockDispenseEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getBlock() == null || event.getItem() == null) return;
 		if (!event.getBlock().getType().equals(Material.DISPENSER)) return;

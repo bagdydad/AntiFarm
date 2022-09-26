@@ -23,6 +23,7 @@ import antifarm.AntiVillagerBreed;
 import antifarm.AntiVillagerCareer;
 import antifarm.AntiVillagerFarm;
 import antifarm.AntiVillagerTarget;
+import antifarm.AntiVillagerTrade;
 import antifarm.AntiVillagerTransform;
 import antifarm.AntiWaterFarm;
 import antifarm.AntiWaterlessFarm;
@@ -45,7 +46,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 				new AntiBoneMeal(this), new AntiFishFarm(this), new AntiWaterlessFarm(this), new AntiMobSpawner(this),
 				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
 				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this), new AntiSheepShearing(this),
-				new AntiFroglightFarm(this), new AntiVillagerCareer(this));
+				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this));
 
 		getCommand("antifarm").setExecutor(new Commands(this));
 
@@ -64,13 +65,13 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 	public void onDisable() {
 	}
 
-	public static void registerEvents(Plugin plugin, Listener... listeners) {
+	private static void registerEvents(Plugin plugin, Listener... listeners) {
 		for (Listener listener : listeners) {
 			Bukkit.getPluginManager().registerEvents(listener, plugin);
 		}
 	}
 
-	public void updateCheck() {
+	private void updateCheck() {
 		new UpdateChecker(this, 99472).getVersion(version -> {
 			getLogger().info("Checking update...");
 			if (this.getDescription().getVersion().equals(version)) {

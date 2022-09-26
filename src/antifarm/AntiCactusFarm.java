@@ -34,6 +34,8 @@ public class AntiCactusFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockGrow(BlockGrowEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getBlock() == null) return;
 		if (!event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.CACTUS)) return;
 		if (!config.getBoolean("farms-settings.prevent-cactus-farms", true)) return;
@@ -71,6 +73,8 @@ public class AntiCactusFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockPhysics(BlockPhysicsEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getBlock() == null || event.getSourceBlock() == null) return;
 		if (!event.getSourceBlock().getType().equals(Material.SAND) || event.getSourceBlock().getType().equals(Material.RED_SAND) || event.getSourceBlock().getType().toString().contains("CONCRETE_POWDER") || event.getSourceBlock().getType().equals(Material.DRAGON_EGG)) return;
 		if (!event.getBlock().getType().equals(Material.CACTUS)) return;
@@ -102,6 +106,8 @@ public class AntiCactusFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPistonExtend(BlockPistonExtendEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getBlock() == null || event.getDirection() == null) return;
 		if (config.getBoolean("farms-settings.prevent-piston-farms", true)) return;
 		if (!config.getBoolean("farms-settings.prevent-cactus-farms", true)) return;
@@ -129,6 +135,8 @@ public class AntiCactusFarm implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPistonRetract(BlockPistonRetractEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getBlock() == null || event.getDirection() == null) return;
 		if (config.getBoolean("farms-settings.prevent-piston-farms", true)) return;

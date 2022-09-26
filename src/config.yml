@@ -12,6 +12,10 @@ settings:
    break-pistons: true
    # Break detected blocks for auto farm. ('true' option is recommended for performance.)
    break-blocks: true
+   # List of worlds you want to disable anti farm. (Case sensitive list.)
+   disabled-worlds:
+   - "TheNameOfWorldYouWantToDisable"
+   - "AnotherWorld"
 
 # Anti afk fish farm settings.
 anti-fishing:
@@ -44,6 +48,33 @@ mob-spawner-settings:
    admin-warn-message: "&cMob spawner break is disabled on server. But you are an admin and if you want to break, you can. (Sneak + Attack)"
    # Transformation blocking message to admin.
    transformation-warn-message: "&cYou can't convert mob spawner, this action is blocked on server!"
+   # Spawner data customization.
+   spawner-data:
+      # Enable/Disable option.
+      enable: false
+      # Spawners.
+      spawners:
+         # Spawner's type (zombie, skeleton, etc).
+         exampleSpawner:
+            # Set the maximum number of similar entities that are allowed to be within spawning range of this spawner.
+            maxNearbyEntities: 6
+            # Set the maximum spawn delay amount (in ticks) (20 ticks = 1 second).
+            maxSpawnDelay: 800
+            # Set the minimum spawn delay amount (in ticks) (20 ticks = 1 second).
+            minSpawnDelay: 200
+            # Set the maximum distance (squared) a player can be in order for this spawner to be active.
+            requiredPlayerRange: 16
+            # Set how many mobs attempt to spawn.
+            spawnCount: 4
+            # Set the new spawn range.
+            spawnRange: 4
+         zombie:
+            maxNearbyEntities: 6
+            maxSpawnDelay: 800
+            minSpawnDelay: 200
+            requiredPlayerRange: 16
+            spawnCount: 4
+            spawnRange: 4
 
 # Villager settings.
 villager-settings:
@@ -59,6 +90,10 @@ villager-settings:
    prevent-zombie-villagers-cure: true
    # Prevents villagers from being targeted by creatures. (Helps protect the villager population.)
    prevent-targeting-villager: true
+   # Prevents trade with villagers.
+   prevent-villager-trade: false
+   # Prevents trade with wandering traders.
+   prevent-wandering-trader-trade: false
    # Disables iron golem spawning with villager interaction.
    prevent-golem-spawning:
       # Prevents iron golem spawning when villager is scared or attacked.
@@ -98,6 +133,8 @@ dispenser-settings:
 prevent-mob-farms:
    # Enable/Disable option.
    enable: true
+   # Percentage of damage the player must inflict for the mob to loot.
+   required-damage-percent-for-loot: 80
    # All afk mob farms are blocked by default.
    # If you only want to block only one creature's farm. Set 'blacklist' to 'true' and add the name of the creature you want to block to the 'moblist'.
    # If you only want to allow only one creature's farm. Set 'blacklist' to 'false' and add the name of the creature you want to block to the 'moblist'.
@@ -105,7 +142,7 @@ prevent-mob-farms:
    blacklist: false
    # blacklist: true -> 'moblist' is blacklist.
    # blacklist: false -> 'moblist' is whitelist.
-   # When adding mobs to the list, all letters should be capitalized. Case sensitive list.
+   # When adding mobs to the list, all letters should be capitalized. (Case sensitive list.)
    moblist:
    - BAT
 

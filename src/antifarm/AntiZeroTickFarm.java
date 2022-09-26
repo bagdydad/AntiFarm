@@ -27,6 +27,8 @@ public class AntiZeroTickFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPistonExtend(BlockPistonExtendEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled()) return;
 		if (!config.getBoolean("farms-settings.prevent-zerotick-farms", true)) return;
 
@@ -53,6 +55,8 @@ public class AntiZeroTickFarm implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPistonRetract(BlockPistonRetractEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
 
 		if (event.isCancelled()) return;
 		if (!config.getBoolean("farms-settings.prevent-zerotick-farms", true)) return;
@@ -82,7 +86,7 @@ public class AntiZeroTickFarm implements Listener {
 
 		for (Block block : pistonBlocks) {
 			if (config.getStringList("farmland-blocks").contains(block.getType().toString().toUpperCase())) {
-				if (config.getStringList("farm-blocks").contains(block.getRelative(BlockFace.UP).getType().toString())) {
+				if (config.getStringList("farm-blocks").contains(block.getRelative(BlockFace.UP).getType().toString().toUpperCase())) {
 					return true;
 				}
 			}

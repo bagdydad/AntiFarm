@@ -25,6 +25,8 @@ public class AntiVillagerBreed implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onVillagerPickup(EntityPickupItemEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getEntity() == null) return;
 		if (!event.getEntity().getType().equals(EntityType.VILLAGER)) return;
 		if (!config.getBoolean("villager-settings.prevent-villagers-breed", true)) return;
@@ -37,6 +39,8 @@ public class AntiVillagerBreed implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onVillagerDrop(EntityDropItemEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getEntity() == null) return;
 		if (!event.getEntity().getType().equals(EntityType.VILLAGER)) return;
 		if (!config.getBoolean("villager-settings.prevent-villagers-breed", true)) return;
@@ -48,6 +52,8 @@ public class AntiVillagerBreed implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onVillagerBreed(EntityBreedEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getEntity() == null) return;
 		if (!event.getEntity().getType().equals(EntityType.VILLAGER)) return;
@@ -66,6 +72,8 @@ public class AntiVillagerBreed implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onVillagerSpawn(CreatureSpawnEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getEntity() == null) return;
 		if (!event.getEntity().getType().equals(EntityType.VILLAGER)) return;

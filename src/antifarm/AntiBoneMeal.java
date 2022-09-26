@@ -20,6 +20,8 @@ public class AntiBoneMeal implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onDispense(BlockDispenseEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getBlock() == null || event.getItem() == null) return;
 		if (!event.getBlock().getType().equals(Material.DISPENSER)) return;
 		if (!event.getItem().getType().equals(Material.BONE_MEAL)) return;

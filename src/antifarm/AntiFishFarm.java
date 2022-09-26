@@ -28,7 +28,9 @@ public class AntiFishFarm implements Listener {
 	private LocalDateTime clearHashMapsTimer;
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	private void onFish(PlayerFishEvent event) {
+	private void onPlayerFish(PlayerFishEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getPlayer().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getPlayer() == null || event.getState() == null) return;
 		if (!config.getBoolean("anti-fishing.enable", true)) return;

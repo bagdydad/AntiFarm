@@ -20,6 +20,8 @@ public class AntiVillagerTarget  implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onEntityTarget(EntityTargetEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getEntity() == null || event.getTarget() == null) return;
 		if (!event.getTarget().getType().equals(EntityType.VILLAGER)) return;
 		if (!config.getBoolean("villager-settings.prevent-targeting-villager", true)) return;

@@ -27,6 +27,8 @@ public class AntiRaidFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onRaidTrigger(RaidTriggerEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getPlayer().getWorld().getName())) return;
+
 		if (event.isCancelled()) return;
 		if (event.getPlayer() == null) return;
 		if (!config.getBoolean("prevent-raid-farms.enable", true)) return;

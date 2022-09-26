@@ -25,6 +25,8 @@ public class AntiWaterFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockFromTo(BlockFromToEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.getBlock() == null || event.getToBlock() == null || event.getFace() == null) return;
 		if (!event.getBlock().getType().equals(Material.WATER)) return;
 		if (!config.getBoolean("farms-settings.prevent-water-harvesting-farms", true)) return;
@@ -41,6 +43,8 @@ public class AntiWaterFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.getPlayer() == null || event.getBlock() == null || event.getBlockClicked() == null || event.getBlockFace() == null || event.getBucket() == null) return;
 		if (!event.getBucket().equals(Material.WATER_BUCKET)) return;
 		if (!config.getBoolean("farms-settings.prevent-water-harvesting-farms", true)) return;
@@ -52,6 +56,8 @@ public class AntiWaterFarm implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onDispense(BlockDispenseEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
 
 		if (event.getBlock() == null || event.getItem() == null || event.getVelocity() == null) return;
 		if (!event.getBlock().getType().equals(Material.DISPENSER)) return;

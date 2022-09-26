@@ -21,6 +21,8 @@ public class AntiSnowballFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onEntityBlockForm(EntityBlockFormEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getEntity() == null) return;
 		if (!event.getEntity().getType().equals(EntityType.SNOWMAN)) return;
 		if (!event.getNewState().getType().equals(Material.SNOW)) return;

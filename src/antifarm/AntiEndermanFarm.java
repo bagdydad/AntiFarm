@@ -21,6 +21,8 @@ public class AntiEndermanFarm implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getEntity() == null) return;
 		if (!event.getEntity().getType().equals(EntityType.ENDERMAN)) return;
 		if (!config.getBoolean("farms-settings.prevent-enderman-harvesting-farms", true)) return;
@@ -32,6 +34,8 @@ public class AntiEndermanFarm implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onEntityPickupItem(EntityPickupItemEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getEntity() == null) return;
 		if (!event.getEntity().getType().equals(EntityType.ENDERMAN)) return;

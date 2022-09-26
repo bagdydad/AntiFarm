@@ -29,6 +29,8 @@ public class AntiVillagerTransform implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getEntity() == null || event.getDamager() == null) return;
 		if (!event.getDamager().getType().equals(EntityType.ZOMBIE) && !event.getDamager().getType().equals(EntityType.ZOMBIE_VILLAGER)) return;
 		if (!event.getEntity().getType().equals(EntityType.VILLAGER)) return;
@@ -47,6 +49,8 @@ public class AntiVillagerTransform implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getPlayer().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getPlayer() == null || event.getRightClicked() == null || event.getPlayer().getInventory().getItemInMainHand() == null || event.getPlayer().getInventory().getItemInOffHand() == null) return;
 		if (!event.getRightClicked().getType().equals(EntityType.ZOMBIE_VILLAGER)) return;
 		if (!event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.GOLDEN_APPLE) || !event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.GOLDEN_APPLE) || !event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.ENCHANTED_GOLDEN_APPLE) || !event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.ENCHANTED_GOLDEN_APPLE)) return;
@@ -58,6 +62,8 @@ public class AntiVillagerTransform implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPotionSplash(PotionSplashEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getEntity() == null || event.getPotion() == null) return;
 

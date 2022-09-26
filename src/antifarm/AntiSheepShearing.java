@@ -20,6 +20,8 @@ public class AntiSheepShearing implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockShearEntity(BlockShearEntityEvent event) {
 
+		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+
 		if (event.isCancelled() || event.getEntity() == null || !event.getEntity().getType().equals(EntityType.SHEEP)) return;
 		if (!config.getBoolean("dispenser-settings.prevent-shearing", true)) return;
 
