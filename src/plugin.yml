@@ -1,8 +1,0 @@
-name: AntiFarm
-version: 1.7.12
-author: oTuin
-main: core.AntiFarmPlugin
-api-version: 1.19
-description: Multipurpose AFK farm blocker.
-commands:
-   antifarm:
