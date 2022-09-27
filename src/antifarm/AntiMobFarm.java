@@ -79,6 +79,7 @@ public class AntiMobFarm implements Listener {
 			if (!((Entity) projectile.getShooter() instanceof Player)) return;
 			player = (Player) projectile.getShooter();
 		} else if (event.getCause().equals(DamageCause.ENTITY_ATTACK)) {
+			if (!(((EntityDamageByEntityEvent) event).getDamager() instanceof Player)) return;
 			player = (Player) ((EntityDamageByEntityEvent) event).getDamager();
 		} else if (event.getCause().equals(DamageCause.FIRE_TICK)) {
 			Long lastPlayerHit = entity.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "lastPlayerHit"), PersistentDataType.LONG, new Date().getTime() - 10000);
