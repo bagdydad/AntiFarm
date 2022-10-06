@@ -11,10 +11,12 @@ public class Commands implements CommandExecutor {
 
 	private final AntiFarmPlugin plugin;
 	private final Configuration config;
+	private final Configuration spawners;
 
 	public Commands(AntiFarmPlugin plugin) {
 		this.plugin = plugin;
 		this.config = plugin.getConfig();
+		this.spawners = plugin.getSpawners();
 	}
 
 	@Override
@@ -23,6 +25,7 @@ public class Commands implements CommandExecutor {
 			if (args.length >= 1) {
 				if (args[0].equalsIgnoreCase("reload")) {
 					config.reload("config");
+					spawners.reload("spawners");
 					sender.sendMessage(ChatColor.GREEN + "[AntiFarm] Configuration file reloaded!");
 					return true;
 				}

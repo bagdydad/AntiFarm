@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,33 +21,40 @@ public class AntiMobSpawner implements Listener {
 
 	private final AntiFarmPlugin plugin;
 	private final Configuration config;
+	private final Configuration spawners;
 	Random random = new Random();
 
 	public AntiMobSpawner(AntiFarmPlugin plugin) {
 		this.plugin = plugin;
 		this.config = plugin.getConfig();
+		this.spawners = plugin.getSpawners();
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onSpawnerSpawn(SpawnerSpawnEvent event) {
 
-		if (config.getStringList("settings.disabled-worlds").contains(event.getSpawner().getWorld().getName())) return;
+		if (event.isCancelled() || event.getSpawner() == null) return;
 
-		if (event.isCancelled()) return;
+		if (config.getStringList("settings.disabled-worlds").contains(event.getSpawner().getWorld().getName())) return;
 
 		if (config.getBoolean("mob-spawner-settings.prevent-spawn", true)) {
 			event.setCancelled(true);
 			return;
 		}
 
-		if (!config.getBoolean("mob-spawner-settings.spawner-data.enable", false)) return;
+		if (!config.getBoolean("mob-spawner-settings.spawner-data", false)) return;
 
 		CreatureSpawner spawner = event.getSpawner();
 		String spawnerType = spawner.getSpawnedType().toString().toLowerCase();
 
-		if (config.get("mob-spawner-settings.spawner-data.spawners." + spawnerType) == null) return;
+		if (spawners.get("spawners." + spawnerType) == null) return;
 
-		World world = event.getSpawner().getWorld();
+		String world = event.getSpawner().getWorld().getName();
+
+		if (world.equalsIgnoreCase("world")) world = "overworld";
+		if (world.equalsIgnoreCase("world_nether")) world = "the_nether";
+		if (world.equalsIgnoreCase("world_the_end")) world = "the_end";
+
 		Location location = event.getSpawner().getLocation();
 		int x = location.getBlockX();
 		int y = location.getBlockY();
@@ -56,27 +62,27 @@ public class AntiMobSpawner implements Listener {
 
 		boolean match = true;
 
-		if (spawner.getMaxNearbyEntities() != config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".maxNearbyEntities")) match = false;
-		if (spawner.getMaxSpawnDelay() != config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".maxSpawnDelay")) match = false;
-		if (spawner.getMinSpawnDelay() != config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".minSpawnDelay")) match = false;
-		if (spawner.getRequiredPlayerRange() != config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".requiredPlayerRange")) match = false;
-		if (spawner.getSpawnCount() != config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".spawnCount")) match = false;
-		if (spawner.getSpawnRange() != config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".spawnRange")) match = false;
+		if (spawner.getMaxNearbyEntities() != spawners.getInt("spawners." + spawnerType + ".maxNearbyEntities")) match = false;
+		if (spawner.getMaxSpawnDelay() != spawners.getInt("spawners." + spawnerType + ".maxSpawnDelay")) match = false;
+		if (spawner.getMinSpawnDelay() != spawners.getInt("spawners." + spawnerType + ".minSpawnDelay")) match = false;
+		if (spawner.getRequiredPlayerRange() != spawners.getInt("spawners." + spawnerType + ".requiredPlayerRange")) match = false;
+		if (spawner.getSpawnCount() != spawners.getInt("spawners." + spawnerType + ".spawnCount")) match = false;
+		if (spawner.getSpawnRange() != spawners.getInt("spawners." + spawnerType + ".spawnRange")) match = false;
 
 		if (match) return;
 
-		int maxNearbyEntities = config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".maxNearbyEntities", spawner.getMaxNearbyEntities());
-		int maxSpawnDelay = config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".maxSpawnDelay", spawner.getMaxSpawnDelay());
-		int minSpawnDelay = config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".minSpawnDelay", spawner.getMinSpawnDelay());
-		int requiredPlayerRange = config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".requiredPlayerRange", spawner.getRequiredPlayerRange());
-		int spawnCount = config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".spawnCount", spawner.getSpawnCount());
-		int spawnRange = config.getInt("mob-spawner-settings.spawner-data.spawners." + spawnerType + ".spawnRange", spawner.getSpawnRange());
+		int maxNearbyEntities = spawners.getInt("spawners." + spawnerType + ".maxNearbyEntities", spawner.getMaxNearbyEntities());
+		int maxSpawnDelay = spawners.getInt("spawners." + spawnerType + ".maxSpawnDelay", spawner.getMaxSpawnDelay());
+		int minSpawnDelay = spawners.getInt("spawners." + spawnerType + ".minSpawnDelay", spawner.getMinSpawnDelay());
+		int requiredPlayerRange = spawners.getInt("spawners." + spawnerType + ".requiredPlayerRange", spawner.getRequiredPlayerRange());
+		int spawnCount = spawners.getInt("spawners." + spawnerType + ".spawnCount", spawner.getSpawnCount());
+		int spawnRange = spawners.getInt("spawners." + spawnerType + ".spawnRange", spawner.getSpawnRange());
 		int delay = random.nextInt(maxSpawnDelay-minSpawnDelay) + minSpawnDelay;
 
 		String nbt = "SpawnData:{entity:{id:" + spawnerType + "}}" + ",MaxNearbyEntities:" + maxNearbyEntities + ",MaxSpawnDelay:" + maxSpawnDelay + ",MinSpawnDelay:" + minSpawnDelay + ",RequiredPlayerRange:" + requiredPlayerRange + ",SpawnCount:" + spawnCount + ",SpawnRange:" + spawnRange + ",Delay:" + delay;
 
 		event.getSpawner().getBlock().setType(Material.AIR);
-		plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "execute in minecraft:" + world.getName() + " run setblock " + x + " " + y + " " + z + " minecraft:spawner{" + nbt + "}");
+		plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "execute in minecraft:" + world + " run setblock " + x + " " + y + " " + z + " minecraft:spawner{" + nbt + "}");
 
 	}
 

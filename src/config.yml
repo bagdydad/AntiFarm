@@ -48,33 +48,8 @@ mob-spawner-settings:
    admin-warn-message: "&cMob spawner break is disabled on server. But you are an admin and if you want to break, you can. (Sneak + Attack)"
    # Transformation blocking message to admin.
    transformation-warn-message: "&cYou can't convert mob spawner, this action is blocked on server!"
-   # Spawner data customization.
-   spawner-data:
-      # Enable/Disable option.
-      enable: false
-      # Spawners.
-      spawners:
-         # Spawner's type (zombie, skeleton, etc).
-         exampleSpawner:
-            # Set the maximum number of similar entities that are allowed to be within spawning range of this spawner.
-            maxNearbyEntities: 6
-            # Set the maximum spawn delay amount (in ticks) (20 ticks = 1 second).
-            maxSpawnDelay: 800
-            # Set the minimum spawn delay amount (in ticks) (20 ticks = 1 second).
-            minSpawnDelay: 200
-            # Set the maximum distance (squared) a player can be in order for this spawner to be active.
-            requiredPlayerRange: 16
-            # Set how many mobs attempt to spawn.
-            spawnCount: 4
-            # Set the new spawn range.
-            spawnRange: 4
-         zombie:
-            maxNearbyEntities: 6
-            maxSpawnDelay: 800
-            minSpawnDelay: 200
-            requiredPlayerRange: 16
-            spawnCount: 4
-            spawnRange: 4
+   # Spawner data customization. (Spawner settings are in spawners.yml)
+   spawner-data: false
 
 # Villager settings.
 villager-settings:
@@ -133,6 +108,12 @@ dispenser-settings:
 prevent-mob-farms:
    # Enable/Disable option.
    enable: true
+   # Allows drops from the creatures that die from special causes. (For custom entity killer plugins.)
+   allow-custom-death-drops: false
+   # Block experience drop from the creature the player didn't kill.
+   block-drop-xp: true
+   # Block item drop from the creature the player didn't kill.
+   block-drop-item: true
    # Percentage of damage the player must inflict for the mob to loot.
    required-damage-percent-for-loot: 80
    # All afk mob farms are blocked by default.

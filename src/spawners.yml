@@ -1,0 +1,22 @@
+spawners:
+   # Spawner's type (zombie, skeleton, etc).
+   exampleSpawner:
+      # Set the maximum number of similar entities that are allowed to be within spawning range of this spawner.
+      maxNearbyEntities: 6
+      # Set the maximum spawn delay amount (in ticks) (20 ticks = 1 second).
+      maxSpawnDelay: 800
+      # Set the minimum spawn delay amount (in ticks) (20 ticks = 1 second).
+      minSpawnDelay: 200
+      # Set the maximum distance (squared) a player can be in order for this spawner to be active.
+      requiredPlayerRange: 16
+      # Set how many mobs attempt to spawn.
+      spawnCount: 4
+      # Set the new spawn range.
+      spawnRange: 4
+   zombie:
+      maxNearbyEntities: 6
+      maxSpawnDelay: 800
+      minSpawnDelay: 200
+      requiredPlayerRange: 16
+      spawnCount: 4
+      spawnRange: 44

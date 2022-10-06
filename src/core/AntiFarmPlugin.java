@@ -35,11 +35,13 @@ import update.UpdateChecker;
 public class AntiFarmPlugin extends JavaPlugin implements Listener {
 
 	private Configuration config;
+	private Configuration spawners;
 
 	@Override
 	public void onEnable() {
 
 		config = new Configuration("config", this);
+		spawners = new Configuration("spawners", this);
 
 		registerEvents(this, new AntiPistonFarm(this), new AntiVillagerFarm(this), new AntiWaterFarm(this), new AntiCactusFarm(this),
 				new AntiEndermanFarm(this), new AntiVillagerBreed(this), new AntiMobFarm(this), new AntiLightlessFarm(this),
@@ -88,6 +90,10 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 	@Override
 	public Configuration getConfig() {
 		return config;
+	}
+
+	public Configuration getSpawners() {
+		return spawners;
 	}
 
 }

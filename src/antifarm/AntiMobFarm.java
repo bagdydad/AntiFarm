@@ -36,7 +36,7 @@ public class AntiMobFarm implements Listener {
 		this.config = plugin.getConfig();
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	private void onEntityDeath(EntityDeathEvent event) {
 
 		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
@@ -44,6 +44,11 @@ public class AntiMobFarm implements Listener {
 		if (event.getEntity() instanceof Player || event.getEntity() instanceof ArmorStand || event.getEntity() instanceof Villager || event.getEntity() instanceof ChestedHorse) return;
 
 		if (!config.getBoolean("prevent-mob-farms.enable", true)) return;
+		if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.CUSTOM) && config.getBoolean("prevent-mob-farms.allow-custom-death-drops", false)) {
+			event.setDroppedExp(0);
+			event.getDrops().clear();
+			return;
+		}
 		if (config.getBoolean("prevent-mob-farms.blacklist", true) && !config.getStringList("prevent-mob-farms.moblist").contains(event.getEntity().getType().toString().toUpperCase())) return;
 		if (!config.getBoolean("prevent-mob-farms.blacklist", true) && config.getStringList("prevent-mob-farms.moblist").contains(event.getEntity().getType().toString().toUpperCase())) return;
 
@@ -52,8 +57,8 @@ public class AntiMobFarm implements Listener {
 		double damagePercentage = config.getDouble("prevent-mob-farms.required-damage-percent-for-loot") / 100;
 		if ((maxHealth * damagePercentage) <= damageTaken) return;
 
-		event.getDrops().clear();
-		event.setDroppedExp(0);
+		if (config.getBoolean("prevent-mob-farms.block-drop-xp", true)) event.setDroppedExp(0);
+		if (config.getBoolean("prevent-mob-farms.block-drop-item", true)) event.getDrops().clear();
 
 	}
 

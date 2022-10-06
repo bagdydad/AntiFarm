@@ -1,5 +1,5 @@
 name: AntiFarm
-version: 1.7.13
+version: 1.7.15
 author: oTuin
 main: core.AntiFarmPlugin
 api-version: 1.19

@@ -33,7 +33,9 @@ public class Configuration extends YamlConfiguration {
         }
 
         try {
-        	ConfigUpdater.update(plugin, path + ".yml", file);
+        	if (path.equalsIgnoreCase("config")) {
+        		ConfigUpdater.update(plugin, path + ".yml", this.file);
+        	}
             super.load(this.file);
         } catch (Exception e) {
             e.printStackTrace();
