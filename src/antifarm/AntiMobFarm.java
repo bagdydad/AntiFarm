@@ -36,7 +36,7 @@ public class AntiMobFarm implements Listener {
 		this.config = plugin.getConfig();
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onEntityDeath(EntityDeathEvent event) {
 
 		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
