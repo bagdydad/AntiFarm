@@ -44,11 +44,7 @@ public class AntiMobFarm implements Listener {
 		if (event.getEntity() instanceof Player || event.getEntity() instanceof ArmorStand || event.getEntity() instanceof Villager || event.getEntity() instanceof ChestedHorse) return;
 
 		if (!config.getBoolean("prevent-mob-farms.enable", true)) return;
-		if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.CUSTOM) && config.getBoolean("prevent-mob-farms.allow-custom-death-drops", false)) {
-			event.setDroppedExp(0);
-			event.getDrops().clear();
-			return;
-		}
+		if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.CUSTOM) && config.getBoolean("prevent-mob-farms.allow-custom-death-drops", false)) return;
 		if (config.getBoolean("prevent-mob-farms.blacklist", true) && !config.getStringList("prevent-mob-farms.moblist").contains(event.getEntity().getType().toString().toUpperCase())) return;
 		if (!config.getBoolean("prevent-mob-farms.blacklist", true) && config.getStringList("prevent-mob-farms.moblist").contains(event.getEntity().getType().toString().toUpperCase())) return;
 
