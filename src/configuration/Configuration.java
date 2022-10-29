@@ -12,10 +12,8 @@ public class Configuration extends YamlConfiguration {
 	private File file;
 
 	public Configuration(String path, AntiFarmPlugin plugin) {
-
         this.plugin = plugin;
         this.load(path);
-
     }
 
     public void saveDefaults(String path) {
@@ -29,7 +27,11 @@ public class Configuration extends YamlConfiguration {
 
     	if (!this.file.exists()) {
             this.file.getParentFile().mkdirs();
-            this.saveDefaults(path);
+            try {
+            	this.saveDefaults(path);
+            } catch (Exception e) {
+            	 e.printStackTrace();
+            }
         }
 
         try {
@@ -44,13 +46,11 @@ public class Configuration extends YamlConfiguration {
     }
 
     public void save() {
-
         try {
             super.save(this.file);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void reload(String path) {

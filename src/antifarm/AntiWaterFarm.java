@@ -1,13 +1,9 @@
 package antifarm;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.type.Dispenser;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 
@@ -49,26 +45,6 @@ public class AntiWaterFarm implements Listener {
 		if (!event.getBucket().equals(Material.WATER_BUCKET)) return;
 		if (!config.getBoolean("farms-settings.prevent-water-harvesting-farms", true)) return;
 		if (!config.getStringList("farm-blocks").contains(event.getBlockClicked().getRelative(event.getBlockFace()).getType().toString().toUpperCase())) return;
-
-		event.setCancelled(true);
-
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	private void onDispense(BlockDispenseEvent event) {
-
-		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
-
-		if (event.getBlock() == null || event.getItem() == null || event.getVelocity() == null) return;
-		if (!event.getBlock().getType().equals(Material.DISPENSER)) return;
-		if (!event.getItem().getType().equals(Material.WATER_BUCKET)) return;
-
-		Dispenser dispenser = (Dispenser) event.getBlock().getBlockData();
-		Block block = event.getBlock().getRelative(dispenser.getFacing());
-
-		if (!block.getRelative(BlockFace.DOWN).getType().equals(Material.FARMLAND)) return;
-		if (!config.getBoolean("farms-settings.prevent-water-harvesting-farms", true)) return;
-		if (!config.getStringList("farm-blocks").contains(block.getType().toString().toUpperCase())) return;
 
 		event.setCancelled(true);
 

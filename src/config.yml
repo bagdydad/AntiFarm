@@ -14,7 +14,7 @@ settings:
    break-blocks: true
    # List of worlds you want to disable anti farm. (Case sensitive list.)
    disabled-worlds:
-   - "TheNameOfWorldYouWantToDisable"
+   - "SomeWorld"
    - "AnotherWorld"
 
 # Anti afk fish farm settings.
@@ -96,13 +96,25 @@ farms-settings:
    prevent-berry-farms: true
    # Prevents 'farmland-blocks' with 'farm-blocks' from being moved by pistons.
    prevent-zerotick-farms: true
+   # Prevents string dupe.
+   prevent-string-dupe:  true
+   # Prevents dripstone farm.
+   prevent-dripstone-farms:  true
+   # Prevents infinity lava with dripstone.
+   prevent-infinity-lava:  true
 
-# Dispenser settings.
-dispenser-settings:
-   # Prevent bone meal throwing with dispenser.
-   prevent-bonemeal: true
+# If dispenser is looking at a farm block in "farmland-blocks", it will be prevented from throwing items in the "blocked-item-list".
+anti-dispenser:
+   # Enable/Disable option.
+   enable: true
    # Prevent shearing sheep with dispenser.
-   prevent-shearing: true
+   prevent-dispenser-shearing: true
+   # Blocked item list. (Case sensitive list.)
+   blocked-item-list:
+   - BONE_MEAL
+   - GLASS_BOTTLE
+   - WATER_BUCKET
+   - LAVA_BUCKET
 
 # Automatic mob farms settings.
 prevent-mob-farms:
@@ -134,12 +146,31 @@ prevent-raid-farms:
    # Cooldown between raids. (Seconds.)
    cooldown: 600
 
-# Froglight farms settings.
-prevent-froglight-farms:
-   # Enable/Disable option.
-   enable: true
-   # Limit of froglight that a frog can produce in its lifetime.
-   count: 5
+# Creature item output limit. Production range in which mobs must be fed.
+# When frogs reach maximum froglight production number, they should be fed with smile ball to continue producing.
+# When chickens reach maximum egg production number, they should be fed with wheat seeds to continue producing.
+# When the cows are milked, they should be fed with wheat and a cooling period should be waited for milking again.
+# The maximum production number is determined by a random number between the maximum and minimum specified in the configuration.
+# The maximum production number is different per mob and varies with each feeding.
+# The minimum should not be greater than the maximum.
+creature-product-limiter:
+   frog:
+      enable: true
+      froglight-min: 5
+      froglight-max: 10
+      feed-msg: "&aFrog successfully fed."
+   chicken:
+      enable: true
+      egg-min: 5
+      egg-max: 10
+      feed-msg: "&aChicken successfully fed."
+   cow:
+      enable: true
+      milk-cooldown-sec: 600
+      milk-msg: "&aCow successfully milked."
+      feed-msg: "&aCow successfully fed."
+      cooldown-msg: "&cThis cow can be milked again after &f%time% &cseconds."
+      malnutrition-warning-msg: "&cMilking is unsuccessful because the cow is malnourished."
 
 # List of blocks on which any farm block can be grown.
 farmland-blocks:
@@ -152,6 +183,7 @@ farmland-blocks:
 - FARMLAND
 - SOUL_SAND
 - END_STONE
+- STONE
 
 # List of all things that can be farmed.
 farm-blocks:
@@ -189,3 +221,17 @@ farm-blocks:
 - WARPED_FUNGUS
 - MOSS_BLOCK
 - KELP
+- BEE_NEST
+- BEEHIVE
+- SUNFLOWER
+- LILAC
+- ROSE_BUSH
+- PEONY
+- WEEPING_VINES
+- WEEPING_VINES_PLANT
+- TWISTING_VINES
+- TWISTING_VINES_PLANT
+- BIG_DRIPLEAF
+- AMETHYST_CLUSTER
+- DRIPSTONE_BLOCK
+- POINTED_DRIPSTONE

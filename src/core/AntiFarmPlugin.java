@@ -6,18 +6,22 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import antifarm.AntiBerryFarm;
-import antifarm.AntiBoneMeal;
 import antifarm.AntiCactusFarm;
+import antifarm.AntiChickenEggFarm;
+import antifarm.AntiCowMilk;
+import antifarm.AntiDispenser;
+import antifarm.AntiDripstoneFarm;
 import antifarm.AntiEndermanFarm;
 import antifarm.AntiFishFarm;
 import antifarm.AntiFroglightFarm;
+import antifarm.AntiLavaFarm;
 import antifarm.AntiLightlessFarm;
 import antifarm.AntiMobFarm;
 import antifarm.AntiMobSpawner;
 import antifarm.AntiPistonFarm;
 import antifarm.AntiRaidFarm;
-import antifarm.AntiSheepShearing;
 import antifarm.AntiSnowballFarm;
+import antifarm.AntiStringDupe;
 import antifarm.AntiVillageGuard;
 import antifarm.AntiVillagerBreed;
 import antifarm.AntiVillagerCareer;
@@ -45,10 +49,11 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 
 		registerEvents(this, new AntiPistonFarm(this), new AntiVillagerFarm(this), new AntiWaterFarm(this), new AntiCactusFarm(this),
 				new AntiEndermanFarm(this), new AntiVillagerBreed(this), new AntiMobFarm(this), new AntiLightlessFarm(this),
-				new AntiBoneMeal(this), new AntiFishFarm(this), new AntiWaterlessFarm(this), new AntiMobSpawner(this),
+				new AntiDispenser(this), new AntiFishFarm(this), new AntiWaterlessFarm(this), new AntiMobSpawner(this),
 				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
-				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this), new AntiSheepShearing(this),
-				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this));
+				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this),
+				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this), new AntiStringDupe(this),
+				new AntiChickenEggFarm(this), new AntiCowMilk(this), new AntiDripstoneFarm(this), new AntiLavaFarm(this));
 
 		getCommand("antifarm").setExecutor(new Commands(this));
 

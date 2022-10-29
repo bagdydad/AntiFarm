@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockGrowEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import configuration.Configuration;
@@ -24,6 +23,7 @@ public class AntiLightlessFarm implements Listener {
 		this.config = plugin.getConfig();
 	}
 
+	/*
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockPlace(BlockPlaceEvent event) {
 
@@ -38,6 +38,7 @@ public class AntiLightlessFarm implements Listener {
 		event.setCancelled(true);
 
 	}
+	*/
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPlayerInteract(PlayerInteractEvent event) {

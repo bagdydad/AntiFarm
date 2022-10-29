@@ -1,6 +1,7 @@
 package antifarm;
 
 import java.util.Collection;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityEnterLoveModeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -27,6 +29,7 @@ public class AntiFroglightFarm implements Listener {
 
 	private final AntiFarmPlugin plugin;
 	private final Configuration config;
+	Random random = new Random();
 
 	public AntiFroglightFarm(AntiFarmPlugin plugin) {
 		this.plugin = plugin;
@@ -38,9 +41,7 @@ public class AntiFroglightFarm implements Listener {
 
 		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
 
-		if (event.getEntity() == null || event.getEntity().getKiller() != null) return;
-		if (!event.getEntity().getType().equals(EntityType.MAGMA_CUBE)) return;
-		if (!config.getBoolean("prevent-froglight-farms.enable")) return;
+		if (event.getEntity() == null || event.getEntity().getKiller() != null || !event.getEntity().getType().equals(EntityType.MAGMA_CUBE) || !config.getBoolean("creature-product-limiter.frog.enable", true)) return;
 
 		MagmaCube magmaCube = (MagmaCube) event.getEntity();
 
@@ -53,7 +54,7 @@ public class AntiFroglightFarm implements Listener {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             if (magmaCube.getPose().equals(Pose.DYING)) {
 
-            	String killerUID = magmaCube.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "killerUID"), PersistentDataType.STRING, "none");
+            	String killerUID = magmaCube.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "killerUID"), PersistentDataType.STRING, null);
 
         		for (Entity entity : entities) {
         			if (entity.getType().equals(EntityType.FROG)) {
@@ -63,11 +64,17 @@ public class AntiFroglightFarm implements Listener {
         					Variant variant = frog.getVariant();
         					Location location = frog.getLocation();
 
-        					int count = entity.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "maxTongue"), PersistentDataType.INTEGER, 0);
+        					int currentTongue = frog.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "currentTongue"), PersistentDataType.INTEGER, 0);
+        					int maxTongue = frog.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "maxTongue"), PersistentDataType.INTEGER, 0);
 
-        					if (count < config.getInt("prevent-froglight-farms.count")) {
+        					if (maxTongue == 0) {
+        						maxTongue = random.nextInt(config.getInt("creature-product-limiter.frog.froglight-max", 10) - config.getInt("creature-product-limiter.frog.froglight-min", 5)) + config.getInt("creature-product-limiter.frog.froglight-min", 5);
+        						frog.getPersistentDataContainer().set(new NamespacedKey(plugin, "maxTongue"), PersistentDataType.INTEGER, maxTongue);
+        					}
 
-        						frog.getPersistentDataContainer().set(new NamespacedKey(plugin, "maxTongue"), PersistentDataType.INTEGER, count + 1);
+        					if (currentTongue < maxTongue) {
+
+        						frog.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentTongue"), PersistentDataType.INTEGER, currentTongue + 1);
 
         						if (variant.equals(Variant.WARM)) {
             						location.getWorld().dropItem(location, new ItemStack(Material.PEARLESCENT_FROGLIGHT, 1));
@@ -96,18 +103,36 @@ public class AntiFroglightFarm implements Listener {
 		Entity attacker = event.getDamager();
 		Entity victim = event.getEntity();
 
-		if (!attacker.getType().equals(EntityType.FROG)) return;
-		if (!victim.getType().equals(EntityType.MAGMA_CUBE)) return;
-		if (!config.getBoolean("prevent-froglight-farms.enable")) return;
+		if (!attacker.getType().equals(EntityType.FROG) || !victim.getType().equals(EntityType.MAGMA_CUBE) || !config.getBoolean("creature-product-limiter.frog.enable", true)) return;
 
-		MagmaCube magmaCube = (MagmaCube) victim;
-		Frog frog = (Frog) attacker;
+		Entity magmaCube = victim;
+		Entity frog = attacker;
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             if (magmaCube.getPose().equals(Pose.DYING)) {
             	magmaCube.getPersistentDataContainer().set(new NamespacedKey(plugin, "killerUID"), PersistentDataType.STRING, frog.getUniqueId().toString());
             }
         }, 1);
+
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	private void onEntityEnterLoveMode(EntityEnterLoveModeEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
+		if (event.isCancelled() || event.getHumanEntity() == null || event.getEntity() == null || !config.getBoolean("creature-product-limiter.frog.enable") || !event.getEntity().getType().equals(EntityType.FROG)) return;
+
+		Entity frog = event.getEntity();
+		int currentTongue = frog.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "currentTongue"), PersistentDataType.INTEGER, 0);
+		int maxTongue = frog.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "maxTongue"), PersistentDataType.INTEGER, 0);
+
+		if (currentTongue >= maxTongue) {
+			maxTongue = random.nextInt(config.getInt("creature-product-limiter.frog.froglight-max", 10) - config.getInt("creature-product-limiter.frog.froglight-min", 5)) + config.getInt("creature-product-limiter.frog.froglight-min", 5);
+			frog.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentTongue"), PersistentDataType.INTEGER, 0);
+			frog.getPersistentDataContainer().set(new NamespacedKey(plugin, "maxTongue"), PersistentDataType.INTEGER, maxTongue);
+			event.getHumanEntity().sendMessage(config.getString("settings.prefix").replaceAll("&", "§") + config.getString("creature-product-limiter.frog.feed-msg").replaceAll("&", "§"));
+		}
 
 	}
 
