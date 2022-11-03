@@ -41,15 +41,14 @@ public class AntiCowMilk implements Listener {
 
 		Entity cow = event.getRightClicked();
 		int milked = cow.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "milked"), PersistentDataType.INTEGER, 0);
-		Long lastMilked = cow.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "lastMilked"), PersistentDataType.LONG, new Date().getTime() - 600000);
-		int elapsedTime = (int) (Duration.between(LocalDateTime.ofInstant(Instant.ofEpochMilli(lastMilked), TimeZone.getDefault().toZoneId()), LocalDateTime.now()).toSeconds());
+		Long lastFeed = cow.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "lastFeed"), PersistentDataType.LONG, new Date().getTime() - 600000);
+		int elapsedTime = (int) (Duration.between(LocalDateTime.ofInstant(Instant.ofEpochMilli(lastFeed), TimeZone.getDefault().toZoneId()), LocalDateTime.now()).toSeconds());
 		int cooldown = config.getInt("creature-product-limiter.cow.milk-cooldown-sec", 600);
 		int remainingTime =  cooldown - elapsedTime;
 
 		if (event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.BUCKET) || event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.BUCKET)) {
 			if (milked == 0 && elapsedTime >= cooldown) {
 				cow.getPersistentDataContainer().set(new NamespacedKey(plugin, "milked"), PersistentDataType.INTEGER, 1);
-				cow.getPersistentDataContainer().set(new NamespacedKey(plugin, "lastMilked"), PersistentDataType.LONG, new Date().getTime());
 				event.getPlayer().sendMessage(config.getString("settings.prefix").replaceAll("&", "§") + (config.getString("creature-product-limiter.cow.milk-msg").replaceAll("%time%", String.valueOf(remainingTime)).replaceAll("&", "§")));
 			} else if (elapsedTime < cooldown) {
 				event.setCancelled(true);
@@ -74,6 +73,7 @@ public class AntiCowMilk implements Listener {
 
 		if (milked == 1) {
 			cow.getPersistentDataContainer().set(new NamespacedKey(plugin, "milked"), PersistentDataType.INTEGER, 0);
+			cow.getPersistentDataContainer().set(new NamespacedKey(plugin, "lastFeed"), PersistentDataType.LONG, new Date().getTime());
 			event.getHumanEntity().sendMessage(config.getString("settings.prefix").replaceAll("&", "§") + config.getString("creature-product-limiter.cow.feed-msg").replaceAll("&", "§"));
 		}
 

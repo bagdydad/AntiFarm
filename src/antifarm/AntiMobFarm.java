@@ -41,7 +41,7 @@ public class AntiMobFarm implements Listener {
 
 		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
 
-		if (event.getEntity() instanceof Player || event.getEntity() instanceof ArmorStand || event.getEntity() instanceof Villager || event.getEntity() instanceof ChestedHorse) return;
+		if (event.getEntity().getLastDamageCause() == null || event.getEntity() instanceof Player || event.getEntity() instanceof ArmorStand || event.getEntity() instanceof Villager || event.getEntity() instanceof ChestedHorse) return;
 
 		if (!config.getBoolean("prevent-mob-farms.enable", true)) return;
 		if (event.getEntity().getLastDamageCause().getCause().equals(DamageCause.CUSTOM) && config.getBoolean("prevent-mob-farms.allow-custom-death-drops", false)) return;
@@ -63,7 +63,7 @@ public class AntiMobFarm implements Listener {
 
 		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
 
-		if (event.isCancelled() || event.getEntity() instanceof Player || event.getEntity() instanceof ArmorStand || event.getEntity() instanceof Villager || event.getEntity() instanceof ChestedHorse) return;
+		if (event.isCancelled() || event.getCause() == null || event.getEntity() instanceof Player || event.getEntity() instanceof ArmorStand || event.getEntity() instanceof Villager || event.getEntity() instanceof ChestedHorse) return;
 
 		if (!event.getCause().equals(DamageCause.ENTITY_ATTACK) && !event.getCause().equals(DamageCause.PROJECTILE) && !event.getCause().equals(DamageCause.FIRE_TICK)) return;
 

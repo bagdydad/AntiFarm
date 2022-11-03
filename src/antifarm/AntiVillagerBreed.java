@@ -7,13 +7,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-
-import configuration.Configuration;
-
 import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
+import org.bukkit.event.entity.EntityEnterLoveModeEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 
+import configuration.Configuration;
 import core.AntiFarmPlugin;
 
 public class AntiVillagerBreed implements Listener {
@@ -83,6 +82,18 @@ public class AntiVillagerBreed implements Listener {
 		if (!config.getBoolean("villager-settings.prevent-villagers-breed", true)) return;
 
 		event.setCancelled(true);
+
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	private void onEntityEnterLoveMode(EntityEnterLoveModeEvent event) {
+
+		if (config.getStringList("settings.disabled-worlds").contains(event.getEntity().getWorld().getName())) return;
+
+		if (event.isCancelled() || event.getEntity() == null || !config.getBoolean("villager-settings.prevent-villagers-breed", true) || !event.getEntity().getType().equals(EntityType.VILLAGER)) return;
+
+		Villager villager = (Villager) event.getEntity();
+		villager.setBreed(false);
 
 	}
 

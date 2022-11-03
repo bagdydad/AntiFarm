@@ -37,7 +37,7 @@ anti-fishing:
 # Mob spawner settings.
 mob-spawner-settings:
    # Prevent mob spawner from spawning creatures.
-   prevent-spawn: true
+   prevent-spawn: false
    # Prevent players from breaking mob spawner. (Admins can still break it by sneak and hitting.)
    prevent-break: true
    # Preventing mob spawners from being converted by clicking with mob eggs.
@@ -60,11 +60,22 @@ villager-settings:
    # Prevent villagers from breeding.
    prevent-villagers-breed: true
    # Prevents villagers from getting infected. (This blocks the way to get discounts from villagers on your server.)
-   prevent-villagers-infection: true
+   prevent-villagers-infection:
+      # Enable/Disable option.
+      enable: true
+      # Chance of being infected. If this possibility is not realized, will die.
+      # If set to 0, it will not be infected and die.
+      # Even if the chance of infection is set to 100, there is always a risk of death.
+      infection-percent: 30
    # Prevent zombie villagers from being cured. (This makes it difficult to reach villagers on your server, making them valuable.)
-   prevent-zombie-villagers-cure: true
+   prevent-zombie-villagers-cure:
+      # Enable/Disable option.
+      enable: true
+      # Chance of being cured. If this possibility is not realized, will die.
+      # If set to 0, it will not be cured and die.
+      cure-percent: 30
    # Prevents villagers from being targeted by creatures. (Helps protect the villager population.)
-   prevent-targeting-villager: true
+   prevent-targeting-villager: false
    # Prevents trade with villagers.
    prevent-villager-trade: false
    # Prevents trade with wandering traders.
@@ -72,9 +83,9 @@ villager-settings:
    # Disables iron golem spawning with villager interaction.
    prevent-golem-spawning:
       # Prevents iron golem spawning when villager is scared or attacked.
-      village-defense: true
+      village-defense: false
       # Prevents iron golem spawning when the village is raiding.
-      village-raids: true
+      village-raids: false
 
 # Automatic farms settings.
 farms-settings:
@@ -97,13 +108,13 @@ farms-settings:
    # Prevents 'farmland-blocks' with 'farm-blocks' from being moved by pistons.
    prevent-zerotick-farms: true
    # Prevents string dupe.
-   prevent-string-dupe:  true
+   prevent-string-dupe: true
    # Prevents dripstone farm.
-   prevent-dripstone-farms:  true
+   prevent-dripstone-farms: true
    # Prevents infinity lava with dripstone.
-   prevent-infinity-lava:  true
+   prevent-infinity-lava: true
 
-# If dispenser is looking at a farm block in "farmland-blocks", it will be prevented from throwing items in the "blocked-item-list".
+# If dispenser is looking at a farm block, it will be prevented from throwing items in the "blocked-item-list".
 anti-dispenser:
    # Enable/Disable option.
    enable: true
@@ -127,7 +138,7 @@ prevent-mob-farms:
    # Block item drop from the creature the player didn't kill.
    block-drop-item: true
    # Percentage of damage the player must inflict for the mob to loot.
-   required-damage-percent-for-loot: 80
+   required-damage-percent-for-loot: 70
    # All afk mob farms are blocked by default.
    # If you only want to block only one creature's farm. Set 'blacklist' to 'true' and add the name of the creature you want to block to the 'moblist'.
    # If you only want to allow only one creature's farm. Set 'blacklist' to 'false' and add the name of the creature you want to block to the 'moblist'.
@@ -235,3 +246,4 @@ farm-blocks:
 - AMETHYST_CLUSTER
 - DRIPSTONE_BLOCK
 - POINTED_DRIPSTONE
+- MANGROVE_LEAVES
