@@ -71,9 +71,10 @@ public class AntiCowMilk implements Listener {
 		Entity cow = event.getEntity();
 		int milked = cow.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "milked"), PersistentDataType.INTEGER, 0);
 
+		cow.getPersistentDataContainer().set(new NamespacedKey(plugin, "lastFeed"), PersistentDataType.LONG, new Date().getTime());
+
 		if (milked == 1) {
 			cow.getPersistentDataContainer().set(new NamespacedKey(plugin, "milked"), PersistentDataType.INTEGER, 0);
-			cow.getPersistentDataContainer().set(new NamespacedKey(plugin, "lastFeed"), PersistentDataType.LONG, new Date().getTime());
 			event.getHumanEntity().sendMessage(config.getString("settings.prefix").replaceAll("&", "§") + config.getString("creature-product-limiter.cow.feed-msg").replaceAll("&", "§"));
 		}
 
