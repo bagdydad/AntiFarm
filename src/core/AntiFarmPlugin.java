@@ -32,6 +32,8 @@ import antifarm.AntiVillagerTransform;
 import antifarm.AntiWaterFarm;
 import antifarm.AntiWaterlessFarm;
 import antifarm.AntiZeroTickFarm;
+import antifarm.AntiArmadilloXPFarm;
+
 import configuration.Configuration;
 import metrics.Metrics;
 import update.UpdateChecker;
@@ -53,7 +55,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
 				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this),
 				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this), new AntiStringDupe(this),
-				new AntiChickenEggFarm(this), new AntiCowMilk(this), new AntiDripstoneFarm(this), new AntiLavaFarm(this));
+				new AntiChickenEggFarm(this), new AntiCowMilk(this), new AntiDripstoneFarm(this), new AntiLavaFarm(this), new AntiArmadilloXPFarm(this));
 
 		getCommand("antifarm").setExecutor(new Commands(this));
 
