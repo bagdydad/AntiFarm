@@ -1,7 +1,7 @@
 package antifarm;
 
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Snowman;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,7 +24,7 @@ public class AntiSnowballFarm implements Listener {
 		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
 
 		if (event.isCancelled() || event.getEntity() == null) return;
-		if (!event.getEntity().getType().equals(EntityType.SNOWMAN)) return;
+		if (!(event.getEntity() instanceof Snowman)) return;
 		if (!event.getNewState().getType().equals(Material.SNOW)) return;
 		if (!config.getBoolean("farms-settings.prevent-snowball-farms", true)) return;
 

@@ -30,6 +30,16 @@ public class AntiMobFarm implements Listener {
 
 	private final AntiFarmPlugin plugin;
 	private final Configuration config;
+	private static final Attribute maxmobHealth;
+	static {
+		Attribute health;
+		try {
+			health = Attribute.valueOf("MAX_HEALTH");
+		} catch (IllegalArgumentException e) {
+			health = Attribute.valueOf("GENERIC_MAX_HEALTH");
+		}
+		maxmobHealth = health;
+	}
 
 	public AntiMobFarm(AntiFarmPlugin plugin) {
 		this.plugin = plugin;
@@ -49,7 +59,7 @@ public class AntiMobFarm implements Listener {
 		if (!config.getBoolean("prevent-mob-farms.blacklist", true) && config.getStringList("prevent-mob-farms.moblist").contains(event.getEntity().getType().toString().toUpperCase())) return;
 
 		double damageTaken = event.getEntity().getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "damageTaken"), PersistentDataType.DOUBLE, 0.0);
-		double maxHealth = event.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+		double maxHealth = event.getEntity().getAttribute(maxmobHealth).getValue();
 		double damagePercentage = config.getDouble("prevent-mob-farms.required-damage-percent-for-loot") / 100;
 		if ((maxHealth * damagePercentage) <= damageTaken) return;
 
