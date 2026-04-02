@@ -114,10 +114,6 @@ farms-settings:
    # Prevents infinity lava with dripstone.
    prevent-infinity-lava: true
 
-# i couldnt decide where to shove this
-xp-farms:
-   prevent-armadillo-xp-farm: true
-
 # If dispenser is looking at a farm block, it will be prevented from throwing items in the "blocked-item-list".
 anti-dispenser:
    # Enable/Disable option.
