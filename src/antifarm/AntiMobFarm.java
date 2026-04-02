@@ -30,20 +30,16 @@ public class AntiMobFarm implements Listener {
 
 	private final AntiFarmPlugin plugin;
 	private final Configuration config;
-    private static final Attribute maxmobHealth;
-    static {
-        Attribute maxhealth;
-        try {
-            maxhealth = (Attribute) Attribute.class.getField("MAX_HEALTH").get(null);
-        } catch (Exception e) {
-            try {
-                maxhealth = (Attribute) Attribute.class.getField("GENERIC_MAX_HEALTH").get(null);
-            } catch (Exception e2) {
-                maxhealth = null;
-            }
-        }
-        maxmobHealth = maxhealth;
-    }
+	private static final Attribute maxmobHealth;
+	static {
+		Attribute health;
+		try {
+			health = Attribute.valueOf("MAX_HEALTH");
+		} catch (IllegalArgumentException e) {
+			health = Attribute.valueOf("GENERIC_MAX_HEALTH");
+		}
+		maxmobHealth = health;
+	}
 
 	public AntiMobFarm(AntiFarmPlugin plugin) {
 		this.plugin = plugin;
