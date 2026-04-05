@@ -40,6 +40,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 
 	private Configuration config;
 	private Configuration spawners;
+	private AntiFishFarm antiFishFarm;
 
 	@Override
 	public void onEnable() {
@@ -49,7 +50,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 
 		registerEvents(this, new AntiPistonFarm(this), new AntiVillagerFarm(this), new AntiWaterFarm(this), new AntiCactusFarm(this),
 				new AntiEndermanFarm(this), new AntiVillagerBreed(this), new AntiMobFarm(this), new AntiLightlessFarm(this),
-				new AntiDispenser(this), new AntiFishFarm(this), new AntiWaterlessFarm(this), new AntiMobSpawner(this),
+				new AntiDispenser(this), antiFishFarm, new AntiWaterlessFarm(this), new AntiMobSpawner(this),
 				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
 				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this),
 				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this), new AntiStringDupe(this),
@@ -101,4 +102,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 		return spawners;
 	}
 
+	public void reloadListeners() {
+		antiFishFarm.getConfig();
+	}
 }

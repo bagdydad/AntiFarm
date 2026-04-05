@@ -1,9 +1,7 @@
 package antifarm;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-
+import configuration.Configuration;
+import core.AntiFarmPlugin;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,79 +10,93 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 
-import configuration.Configuration;
-import core.AntiFarmPlugin;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AntiFishFarm implements Listener {
 
-	private final Configuration config;
+    private static final long clearInterval = 2L * 60 * 60 * 1000; //2h in ms
+    private final Configuration config;
 
-	public AntiFishFarm(AntiFarmPlugin plugin) {
-		this.config = plugin.getConfig();
-	}
+    private final HashMap<String, fishingInfo> fishData = new HashMap<>();
+    private boolean enabled;
+    private Set<String> disabledWorlds;
+    private long chunkCooldownMs;
+    private int maxFish;
+    private boolean warnEnabled;
+    private boolean kickEnabled;
+    private String warnMsg;
+    private String kickMsg;
+    private long lastClearMs = System.currentTimeMillis();
 
-	private HashMap<String, Integer> fishCount = new HashMap<String, Integer>();
-	private HashMap<String, LocalDateTime> fishTime = new HashMap<String, LocalDateTime>();
-	private LocalDateTime clearHashMapsTimer;
+    public AntiFishFarm(AntiFarmPlugin plugin) {
+        this.config = plugin.getConfig();
+        getConfig();
+    }
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	private void onPlayerFish(PlayerFishEvent event) {
+    public void getConfig() {
+        enabled = config.getBoolean("anti-fishing.enable", true);
+        disabledWorlds = new HashSet<>(config.getStringList("settings.disabled-worlds"));
+        chunkCooldownMs = config.getInt("anti-fishing.chunk-cooldown", 600) * 1000L;
+        maxFish = config.getInt("anti-fishing.caught-fish-per-chunk", 10);
+        warnEnabled = config.getBoolean("anti-fishing.warn", true);
+        kickEnabled = config.getBoolean("anti-fishing.kick", false);
+        String prefix = config.getString("settings.prefix", "").replace("&", "§");
+        warnMsg = prefix + config.getString("anti-fishing.warn-msg", "").replace("&", "§");
+        kickMsg = prefix + config.getString("anti-fishing.kick-msg", "").replace("&", "§");
+    }
 
-		if (config.getStringList("settings.disabled-worlds").contains(event.getPlayer().getWorld().getName())) return;
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void onPlayerFish(PlayerFishEvent event) {
+        if (!enabled || event.isCancelled()) return;
+        Player player = event.getPlayer();
+        if (disabledWorlds.contains(player.getWorld().getName())) return;
 
-		if (event.isCancelled() || event.getPlayer() == null || event.getState() == null) return;
-		if (!config.getBoolean("anti-fishing.enable", true)) return;
+        long now = System.currentTimeMillis();
+        if (now - lastClearMs >= clearInterval) {
+            fishData.clear();
+            lastClearMs = now;
+        }
 
-		if (clearHashMapsTimer == null) {
-			clearHashMapsTimer = LocalDateTime.now();
-		} else if (Duration.between(clearHashMapsTimer, LocalDateTime.now()).toHours() >= 2) {
-			fishCount.clear();
-			fishTime.clear();
-			clearHashMapsTimer = LocalDateTime.now();
-		}
+        Chunk chunk = player.getLocation().getChunk();
+        String key = player.getName() + '.' + chunk.getX() + '.' + chunk.getZ();
 
-		Player player = event.getPlayer();
-		Chunk chunk = player.getLocation().getChunk();
-		String key = player.getName() + "." + String.valueOf(chunk.getX()) + "." + String.valueOf(chunk.getZ());
+        fishingInfo stats = fishData.get(key);
+        if (stats != null && stats.firstCaughtTime != 0 && (now - stats.firstCaughtTime) >= chunkCooldownMs) {
+            fishData.remove(key);
+            stats = null;
+        }
 
-		if (fishTime.get(key) != null) {
-			if (Duration.between(fishTime.get(key), LocalDateTime.now()).toSeconds() >= config.getInt("anti-fishing.chunk-cooldown", 600)) {
-				fishCount.remove(key);
-				fishTime.remove(key);
-			}
-		}
+        if (stats == null) {
+            stats = new fishingInfo();
+            fishData.put(key, stats);
+        }
 
-		if (fishCount.get(key) == null) {
-			fishCount.put(key, 0);
-		}
+        long previousCount = stats.count;
+        if (event.getState() == State.CAUGHT_FISH) {
+            if (stats.firstCaughtTime == 0) {
+                stats.firstCaughtTime = now;
+            }
+            stats.count++;
+        }
 
-		int value = fishCount.get(key);
+        if (previousCount >= maxFish) {
+            event.setCancelled(true);
+            stats.count++;
+            if (warnEnabled) {
+                player.sendMessage(warnMsg);
+            }
 
-		if (event.getState().equals(State.CAUGHT_FISH)) {
-			if (fishTime.get(key) == null) {
-				fishTime.put(key, LocalDateTime.now());
-			}
-			fishCount.replace(key, value, value + 1);
-		}
+            if (kickEnabled && previousCount >= maxFish + 10) {
+                player.kickPlayer(kickMsg);
+                stats.count = maxFish;
+            }
+        }
+    }
 
-		if (value >= config.getInt("anti-fishing.caught-fish-per-chunk", 10)) {
-
-			event.setCancelled(true);
-			fishCount.replace(key, fishCount.get(key), value + 1);
-
-			if (config.getBoolean("anti-fishing.warn", true)) {
-				player.sendMessage(config.getString("settings.prefix").replaceAll("&", "§") + config.getString("anti-fishing.warn-msg").replaceAll("&", "§"));
-			}
-
-			if (config.getBoolean("anti-fishing.kick", false)) {
-				if (value >= (config.getInt("anti-fishing.caught-fish-per-chunk", 10) + 10)) {
-					player.kickPlayer(config.getString("settings.prefix").replaceAll("&", "§") + config.getString("anti-fishing.kick-msg").replaceAll("&", "§"));
-					fishCount.replace(key, fishCount.get(key), config.getInt("anti-fishing.caught-fish-per-chunk", 10));
-				}
-			}
-
-		}
-
-	}
-
+    private static class fishingInfo {
+        long count = 0;
+        long firstCaughtTime = 0;
+    }
 }
