@@ -1,15 +1,12 @@
 package antifarm;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
+import configuration.Configuration;
+import core.AntiFarmPlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -18,162 +15,134 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 
-import configuration.Configuration;
-import core.AntiFarmPlugin;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class AntiCactusFarm implements Listener {
 
-	private final AntiFarmPlugin plugin;
-	private final Configuration config;
+    private static final BlockFace[] ADJACENT_FACES = {
+            BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST, BlockFace.SELF
+    };
+    private static final BlockFace[] HORIZONTAL_FACES = {
+            BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST
+    };
+    private final AntiFarmPlugin plugin;
+    private final Set<Material> fallingBlocks;
+    private Set<String> disabledWorlds;
+    private boolean preventCactusFarms;
+    private boolean preventPistonFarms;
+    private boolean breakBlocks;
+    private boolean breakPistons;
 
-	public AntiCactusFarm(AntiFarmPlugin plugin) {
-		this.plugin = plugin;
-		this.config = plugin.getConfig();
-	}
+    public AntiCactusFarm(AntiFarmPlugin plugin) {
+        this.plugin = plugin;
+        this.fallingBlocks = EnumSet.of(Material.SAND, Material.RED_SAND, Material.DRAGON_EGG);
+        for (Material mat : Material.values()) {
+            if (mat.name().endsWith("_CONCRETE_POWDER")) {
+                fallingBlocks.add(mat);
+            }
+        }
+        reloadConf();
+    }
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	private void onBlockGrow(BlockGrowEvent event) {
+    public void reloadConf() {
+        Configuration config = plugin.getConfig();
+        this.disabledWorlds = new HashSet<>(config.getStringList("settings.disabled-worlds"));
+        this.preventCactusFarms = config.getBoolean("farms-settings.prevent-cactus-farms", true);
+        this.preventPistonFarms = config.getBoolean("farms-settings.prevent-piston-farms", true);
+        this.breakBlocks = config.getBoolean("settings.break-blocks", true);
+        this.breakPistons = config.getBoolean("settings.break-pistons", true);
+    }
 
-		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockGrow(BlockGrowEvent event) {
+        if (!preventCactusFarms) return;
+        Block block = event.getBlock();
+        if (block.getRelative(BlockFace.DOWN).getType() != Material.CACTUS) return;
+        if (disabledWorlds.contains(block.getWorld().getName())) return;
 
-		if (event.isCancelled() || event.getBlock() == null) return;
-		if (!event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.CACTUS)) return;
-		if (!config.getBoolean("farms-settings.prevent-cactus-farms", true)) return;
+        for (BlockFace face : ADJACENT_FACES) {
+            Material type = block.getRelative(face).getType();
+            if (type != Material.CACTUS && type != Material.AIR && type != Material.CAVE_AIR && type != Material.VOID_AIR) {
+                event.setCancelled(true);
+                if (breakBlocks) {
+                    scheduleCactusBreak(block);
+                }
+                break;
+            }
+        }
+    }
 
-		Block block = event.getBlock();
-		Location bLoc = block.getLocation();
-		List<Block> domeBlocks = new ArrayList<Block>();
-		Collections.addAll(domeBlocks, block, block.getRelative(BlockFace.UP), block.getRelative(BlockFace.NORTH), block.getRelative(BlockFace.SOUTH), block.getRelative(BlockFace.EAST), block.getRelative(BlockFace.WEST));
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockPhysics(BlockPhysicsEvent event) {
+        if (!preventCactusFarms) return;
+        Block block = event.getBlock();
+        if (block.getType() != Material.CACTUS) return;
+        Block source = event.getSourceBlock();
+        if (!fallingBlocks.contains(source.getType())) return;
+        if (disabledWorlds.contains(block.getWorld().getName())) return;
+        event.setCancelled(true);
+        source.breakNaturally();
+        source.setType(Material.AIR, false);
+        if (breakBlocks) {
+            scheduleCactusBreak(block);
+        }
+    }
 
-		for (Block dBlock : domeBlocks) {
-			if (!(dBlock.getType().equals(Material.CACTUS)) && !(dBlock.getType().equals(Material.AIR)) && !(dBlock.getType().equals(Material.CAVE_AIR))) {
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        handlePistonEvent(event, event.getBlock(), event.getDirection(), event.getBlocks());
+    }
 
-				event.setCancelled(true);
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPistonRetract(BlockPistonRetractEvent event) {
+        handlePistonEvent(event, event.getBlock(), event.getDirection(), event.getBlocks());
+    }
 
-				if (config.getBoolean("settings.break-blocks", true)) {
-					for (int i = 0; i < 4; i++) {
+    private void handlePistonEvent(Cancellable event, Block piston, BlockFace direction, List<Block> blocks) {
+        if (!preventCactusFarms || preventPistonFarms) return;
+        if (disabledWorlds.contains(piston.getWorld().getName())) return;
+        if (blocks.isEmpty()) {
+            if (!checkPistonBlocks(piston, direction)) return;
+        } else {
+            boolean found = false;
+            for (Block b : blocks) {
+                if (checkPistonBlocks(b, direction)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) return;
+        }
+        event.setCancelled(true);
 
-						Block replace = block.getWorld().getBlockAt(bLoc.getBlockX(), bLoc.getBlockY() - i, bLoc.getBlockZ());
+        if (breakPistons) {
+            piston.breakNaturally();
+            piston.setType(Material.AIR, false);
+        }
+    }
 
-						if (replace.getType().equals(Material.CACTUS) || replace.getType().equals(Material.SAND)) {
-							Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-							    	replace.breakNaturally();
-							    	replace.setType(Material.AIR);
-							}, 1);
-						}
-					}
-				}
+    private boolean checkPistonBlocks(Block block, BlockFace direction) {
+        Block checkBlock = block.getRelative(direction);
+        for (BlockFace face : HORIZONTAL_FACES) {
+            if (checkBlock.getRelative(face).getType() == Material.CACTUS) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-				break;
-			}
-		}
-
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	private void onBlockPhysics(BlockPhysicsEvent event) {
-
-		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
-
-		if (event.isCancelled() || event.getBlock() == null || event.getSourceBlock() == null) return;
-		if (!event.getSourceBlock().getType().equals(Material.SAND) || event.getSourceBlock().getType().equals(Material.RED_SAND) || event.getSourceBlock().getType().toString().contains("CONCRETE_POWDER") || event.getSourceBlock().getType().equals(Material.DRAGON_EGG)) return;
-		if (!event.getBlock().getType().equals(Material.CACTUS)) return;
-		if (!config.getBoolean("farms-settings.prevent-cactus-farms", true)) return;
-
-		event.setCancelled(true);
-		event.getSourceBlock().breakNaturally();
-		event.getSourceBlock().setType(Material.AIR);
-
-		if (!config.getBoolean("settings.break-blocks", true)) return;
-
-		Block block = event.getBlock();
-		Location bLoc = block.getLocation();
-
-		for (int i = 0; i < 4; i++) {
-
-			Block replace = block.getWorld().getBlockAt(bLoc.getBlockX(), bLoc.getBlockY() - i, bLoc.getBlockZ());
-
-			if (replace.getType().equals(Material.CACTUS) || replace.getType().equals(Material.SAND)) {
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-				    	replace.breakNaturally();
-				    	replace.setType(Material.AIR);
-				}, 1);
-			}
-		}
-
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	private void onPistonExtend(BlockPistonExtendEvent event) {
-
-		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
-
-		if (event.isCancelled() || event.getBlock() == null || event.getDirection() == null) return;
-		if (config.getBoolean("farms-settings.prevent-piston-farms", true)) return;
-		if (!config.getBoolean("farms-settings.prevent-cactus-farms", true)) return;
-
-		Block piston = event.getBlock();
-		BlockFace direction = event.getDirection();
-		List<Block> pistonBlocks = new ArrayList<Block>();
-
-		if (event.getBlocks().isEmpty()) {
-			pistonBlocks = Arrays.asList(event.getBlock());
-		} else {
-			pistonBlocks = event.getBlocks();
-		}
-
-		if (!checkPistonBlocks(piston, direction, pistonBlocks)) return;
-
-		event.setCancelled(true);
-
-		if (!config.getBoolean("settings.break-pistons", true)) return;
-
-		piston.breakNaturally();
-		piston.setType(Material.AIR);
-
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	private void onPistonRetract(BlockPistonRetractEvent event) {
-
-		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
-
-		if (event.isCancelled() || event.getBlock() == null || event.getDirection() == null) return;
-		if (config.getBoolean("farms-settings.prevent-piston-farms", true)) return;
-		if (!config.getBoolean("farms-settings.prevent-cactus-farms", true)) return;
-
-		Block piston = event.getBlock();
-		BlockFace direction = event.getDirection();
-		List<Block> pistonBlocks = new ArrayList<Block>();
-
-		if (event.getBlocks().isEmpty()) {
-			pistonBlocks = Arrays.asList(event.getBlock());
-		} else {
-			pistonBlocks = event.getBlocks();
-		}
-
-		if (!checkPistonBlocks(piston, direction, pistonBlocks)) return;
-
-		event.setCancelled(true);
-
-		if (!config.getBoolean("settings.break-pistons", true)) return;
-
-		piston.breakNaturally();
-		piston.setType(Material.AIR);
-
-	}
-
-	private boolean checkPistonBlocks(Block piston, BlockFace direction, List<Block> pistonBlocks) {
-
-		for (Block block : pistonBlocks) {
-			Block checkBlock = block.getRelative(direction);
-			if (checkBlock.getRelative(BlockFace.NORTH).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.SOUTH).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.EAST).getType().equals(Material.CACTUS) || checkBlock.getRelative(BlockFace.WEST).getType().equals(Material.CACTUS)) {
-				return true;
-			}
-		}
-
-		return false;
-
-	}
-
+    private void scheduleCactusBreak(Block block) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (int i = 0; i < 4; i++) {
+                Block replace = block.getRelative(0, -i, 0);
+                Material type = replace.getType();
+                if (type == Material.CACTUS || type == Material.SAND) {
+                    replace.breakNaturally();
+                }
+            }
+        }, 1L);
+    }
 }

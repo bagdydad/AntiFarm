@@ -32,10 +32,10 @@ public class AntiFishFarm implements Listener {
 
     public AntiFishFarm(AntiFarmPlugin plugin) {
         this.config = plugin.getConfig();
-        getConfig();
+        reloadConf();
     }
 
-    public void getConfig() {
+    public void reloadConf() {
         enabled = config.getBoolean("anti-fishing.enable", true);
         disabledWorlds = new HashSet<>(config.getStringList("settings.disabled-worlds"));
         chunkCooldownMs = config.getInt("anti-fishing.chunk-cooldown", 600) * 1000L;

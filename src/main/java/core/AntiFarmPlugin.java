@@ -41,16 +41,19 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 	private Configuration config;
 	private Configuration spawners;
 	private AntiFishFarm antiFishFarm;
-
+	private AntiDispenser antiDispenser;
+	private AntiCactusFarm antiCactusFarm;
 	@Override
 	public void onEnable() {
 
 		config = new Configuration("config", this);
 		spawners = new Configuration("spawners", this);
-
-		registerEvents(this, new AntiPistonFarm(this), new AntiVillagerFarm(this), new AntiWaterFarm(this), new AntiCactusFarm(this),
+		antiFishFarm = new AntiFishFarm(this);
+		AntiDispenser = new antiDispenser(this);
+		antiCactusFarm = new AntiCactusFarm(this);
+		registerEvents(this, new AntiPistonFarm(this), new AntiVillagerFarm(this), new AntiWaterFarm(this), antiCactusFarm,
 				new AntiEndermanFarm(this), new AntiVillagerBreed(this), new AntiMobFarm(this), new AntiLightlessFarm(this),
-				new AntiDispenser(this), antiFishFarm, new AntiWaterlessFarm(this), new AntiMobSpawner(this),
+				antiDispenser, antiFishFarm, new AntiWaterlessFarm(this), new AntiMobSpawner(this),
 				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
 				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this),
 				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this), new AntiStringDupe(this),
@@ -81,7 +84,16 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 
 	private void updateCheck() {
 		new UpdateChecker(this, 99472).getVersion(version -> {
-			getLogger().info("Checking update...");
+			getLogger().info("Checking update..."); 
+			// checking for updates or even checking updates is acceptable
+			//	⠀⠀⠀⠀⢀⡴⣆⠀⠀⠀⠀⠀⣠⡀⠀⠀⠀⠀⠀⠀⣼⣿⡗⠀⠀⠀⠀
+			//	⠀⠀⠀⣠⠟⠀⠘⠷⠶⠶⠶⠾⠉⢳⡄⠀⠀⠀⠀⠀⣧⣿⠀⠀⠀⠀⠀
+			//	⠀⠀⣰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣤⣤⣤⣤⣤⣿⢿⣄⠀⠀⠀⠀
+			//	⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⠀⠀⠀⠀⠀⠀⠙⣷⡴⠶⣦
+			//	⠀⠀⢱⡀⠀⠉⠉⠀⠀⠀⠀⠛⠃⠀⢠⡟⠀⠀⠀⢀⣀⣠⣤⠿⠞⠛⠋
+			//	⣠⠾⠋⠙⣶⣤⣤⣤⣤⣤⣀⣠⣤⣾⣿⠴⠶⠚⠋⠉⠁⠀⠀⠀⠀⠀⠀
+			//	⠛⠒⠛⠉⠉⠀⠀⠀⣴⠟⢃⡴⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+			//	⠀⠀⠀⠀⠀⠀⠀⠀⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 			if (this.getDescription().getVersion().equals(version)) {
 				getLogger().info("There is not a new update available.");
 			} else {
@@ -103,6 +115,8 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 	}
 
 	public void reloadListeners() {
-		antiFishFarm.getConfig();
+		antiFishFarm.reloadConf();
+		antiDispenser.reloadConf();
+		antiCactusFarm.reloadConf();
 	}
 }
