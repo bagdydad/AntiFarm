@@ -1,3 +1,8 @@
+// isnt this basically useless
+// why do we even have this?? enlighten me please
+// commenting it out for now
+
+/*
 package antifarm;
 
 import org.bukkit.Material;
@@ -22,7 +27,7 @@ public class AntiLightlessFarm implements Listener {
 	public AntiLightlessFarm(AntiFarmPlugin plugin) {
 		this.config = plugin.getConfig();
 	}
-
+*/
 	/*
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockPlace(BlockPlaceEvent event) {
@@ -39,7 +44,7 @@ public class AntiLightlessFarm implements Listener {
 
 	}
 	*/
-
+/*
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPlayerInteract(PlayerInteractEvent event) {
 
@@ -94,3 +99,4 @@ public class AntiLightlessFarm implements Listener {
 	}
 
 }
+*/
