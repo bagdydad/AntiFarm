@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import antifarm.AntiBarteringFarm;
 import antifarm.AntiBerryFarm;
 import antifarm.AntiCactusFarm;
 import antifarm.AntiChickenEggFarm;
@@ -43,6 +44,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 	private AntiFishFarm antiFishFarm;
 	private AntiDispenser antiDispenser;
 	private AntiCactusFarm antiCactusFarm;
+	private AntiBarteringFarm antiBarteringFarm;
 	@Override
 	public void onEnable() {
 
@@ -51,13 +53,14 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 		antiFishFarm = new AntiFishFarm(this);
 		AntiDispenser = new antiDispenser(this);
 		antiCactusFarm = new AntiCactusFarm(this);
+		antiBarteringFarm = new AntiBarteringFarm(this);
 		registerEvents(this, new AntiPistonFarm(this), new AntiVillagerFarm(this), new AntiWaterFarm(this), antiCactusFarm,
 				new AntiEndermanFarm(this), new AntiVillagerBreed(this), new AntiMobFarm(this), /*new AntiLightlessFarm(this),*/
 				antiDispenser, antiFishFarm, new AntiWaterlessFarm(this), new AntiMobSpawner(this),
 				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
 				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this),
 				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this), new AntiStringDupe(this),
-				new AntiChickenEggFarm(this), new AntiCowMilk(this), new AntiDripstoneFarm(this), new AntiLavaFarm(this), new AntiBarteringFarm(this));
+				new AntiChickenEggFarm(this), new AntiCowMilk(this), new AntiDripstoneFarm(this), new AntiLavaFarm(this), antiBarteringFarm);
 
 		getCommand("antifarm").setExecutor(new Commands(this));
 
@@ -118,5 +121,6 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 		antiFishFarm.reloadConf();
 		antiDispenser.reloadConf();
 		antiCactusFarm.reloadConf();
+		antiBarteringFarm.reloadConf();
 	}
 }
