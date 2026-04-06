@@ -16,7 +16,6 @@ import antifarm.AntiEndermanFarm;
 import antifarm.AntiFishFarm;
 import antifarm.AntiFroglightFarm;
 import antifarm.AntiLavaFarm;
-//import antifarm.AntiLightlessFarm;
 import antifarm.AntiMobFarm;
 import antifarm.AntiMobSpawner;
 import antifarm.AntiPistonFarm;
@@ -55,7 +54,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 		antiCactusFarm = new AntiCactusFarm(this);
 		antiBarteringFarm = new AntiBarteringFarm(this);
 		registerEvents(this, new AntiPistonFarm(this), new AntiVillagerFarm(this), new AntiWaterFarm(this), antiCactusFarm,
-				new AntiEndermanFarm(this), new AntiVillagerBreed(this), new AntiMobFarm(this), /*new AntiLightlessFarm(this),*/
+				new AntiEndermanFarm(this), new AntiVillagerBreed(this), new AntiMobFarm(this),
 				antiDispenser, antiFishFarm, new AntiWaterlessFarm(this), new AntiMobSpawner(this),
 				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
 				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this),
