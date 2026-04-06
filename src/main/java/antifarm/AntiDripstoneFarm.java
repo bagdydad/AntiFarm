@@ -1,4 +1,6 @@
-package antifarm;
+// we have to look further if this is necessary or not
+
+/*package antifarm;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,3 +42,4 @@ public class AntiDripstoneFarm implements Listener {
 
 
 }
+*/

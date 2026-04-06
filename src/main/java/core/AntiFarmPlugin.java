@@ -11,7 +11,7 @@ import antifarm.AntiCactusFarm;
 import antifarm.AntiChickenEggFarm;
 import antifarm.AntiCowMilk;
 import antifarm.AntiDispenser;
-import antifarm.AntiDripstoneFarm;
+// import antifarm.AntiDripstoneFarm; commented out for the time being
 import antifarm.AntiEndermanFarm;
 import antifarm.AntiFishFarm;
 import antifarm.AntiFroglightFarm;
@@ -59,7 +59,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
 				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this),
 				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this), new AntiStringDupe(this),
-				new AntiChickenEggFarm(this), new AntiCowMilk(this), new AntiDripstoneFarm(this), new AntiLavaFarm(this), antiBarteringFarm);
+				new AntiChickenEggFarm(this), new AntiCowMilk(this), /*new AntiDripstoneFarm(this),*/ new AntiLavaFarm(this), antiBarteringFarm);
 
 		getCommand("antifarm").setExecutor(new Commands(this));
 
@@ -86,7 +86,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 
 	private void updateCheck() {
 		new UpdateChecker(this, 99472).getVersion(version -> {
-			getLogger().info("Checking update..."); 
+			getLogger().info("Checking for updates..."); 
 			// checking for updates or even checking updates is acceptable
 			//	⠀⠀⠀⠀⢀⡴⣆⠀⠀⠀⠀⠀⣠⡀⠀⠀⠀⠀⠀⠀⣼⣿⡗⠀⠀⠀⠀
 			//	⠀⠀⠀⣠⠟⠀⠘⠷⠶⠶⠶⠾⠉⢳⡄⠀⠀⠀⠀⠀⣧⣿⠀⠀⠀⠀⠀
