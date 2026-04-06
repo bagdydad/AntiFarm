@@ -100,7 +100,7 @@ farms-settings:
    # Prevents planting on a block of land that has not reached the full water level.
    prevent-waterless-farms: true
    # Prevents planting on farmland with light level below 8.
-   prevent-lightless-farms: true
+   #prevent-lightless-farms: true
    # Prevents the snowman from leaving snow trail on the ground.
    prevent-snowball-farms: true
    # Prevents foxes from dropping sweet berries to the ground.
