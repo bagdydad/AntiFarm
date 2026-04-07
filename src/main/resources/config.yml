@@ -112,6 +112,10 @@ prevent-bartering-farm:
    # when set to true piglins are not allowed to pick up gold from ground so you have to manually hand them now (sparxie laugh effect would be great in here))
    disable-on-ground-gold-picking: false
 
+prevent-armadillo-xp-farm:
+   # disable the infected armadillo xp farm
+   disable-xp: false
+
 growth:
    prevent-growth: true
    # prevent growth of blocks e.g CACTUS BAMBOO KELP etc etc
