@@ -3,7 +3,7 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
-version = '1.7.23'
+version = '1.7.24'
 
 repositories {
     mavenCentral()
@@ -19,7 +19,7 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("1.21")
+        minecraftVersion("1.19")
     }
 }
 
