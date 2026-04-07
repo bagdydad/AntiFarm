@@ -11,7 +11,6 @@ import antifarm.AntiCactusFarm;
 import antifarm.AntiChickenEggFarm;
 import antifarm.AntiCowMilk;
 import antifarm.AntiDispenser;
-// import antifarm.AntiDripstoneFarm; commented out for the time being
 import antifarm.AntiEndermanFarm;
 import antifarm.AntiFishFarm;
 import antifarm.AntiFroglightFarm;
@@ -22,7 +21,6 @@ import antifarm.AntiMobSpawner;
 import antifarm.AntiPistonFarm;
 import antifarm.AntiRaidFarm;
 import antifarm.AntiSnowballFarm;
-/*import antifarm.AntiStringDupe;*/
 import antifarm.AntiVillageGuard;
 import antifarm.AntiVillagerBreed;
 import antifarm.AntiVillagerCareer;
@@ -31,11 +29,8 @@ import antifarm.AntiVillagerTarget;
 import antifarm.AntiVillagerTrade;
 import antifarm.AntiVillagerTransform;
 import antifarm.AntiWaterFarm;
-import antifarm.AntiWaterlessFarm;
 import antifarm.AntiZeroTickFarm;
 import configuration.Configuration;
-import metrics.Metrics;
-import update.UpdateChecker;
 
 public class AntiFarmPlugin extends JavaPlugin implements Listener {
 
@@ -58,22 +53,13 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 		antiGrowth = new AntiGrowth(this);
 		registerEvents(this, new AntiPistonFarm(this), new AntiVillagerFarm(this), new AntiWaterFarm(this), antiCactusFarm,
 				new AntiEndermanFarm(this), new AntiVillagerBreed(this), new AntiMobFarm(this),
-				antiDispenser, antiFishFarm, new AntiWaterlessFarm(this), new AntiMobSpawner(this),
+				antiDispenser, antiFishFarm, new AntiMobSpawner(this),
 				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
 				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this), antiGrowth,
-				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this), /*new AntiStringDupe(this),*/
-				new AntiChickenEggFarm(this), new AntiCowMilk(this), /*new AntiDripstoneFarm(this),*/ new AntiLavaFarm(this), antiBarteringFarm);
+				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this),
+				new AntiChickenEggFarm(this), new AntiCowMilk(this), new AntiLavaFarm(this), antiBarteringFarm);
 
 		getCommand("antifarm").setExecutor(new Commands(this));
-
-		if (config.getBoolean("settings.bstats", true)) {
-			@SuppressWarnings("unused")
-			Metrics metrics = new Metrics(this, 14827);
-		}
-
-		if (config.getBoolean("settings.update-check", true)) {
-			updateCheck();
-		}
 
 	}
 
@@ -85,29 +71,6 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 		for (Listener listener : listeners) {
 			Bukkit.getPluginManager().registerEvents(listener, plugin);
 		}
-	}
-
-	private void updateCheck() {
-		new UpdateChecker(this, 99472).getVersion(version -> {
-			getLogger().info("Checking for updates..."); 
-			// checking for updates or even checking updates is acceptable
-			//	⠀⠀⠀⠀⢀⡴⣆⠀⠀⠀⠀⠀⣠⡀⠀⠀⠀⠀⠀⠀⣼⣿⡗⠀⠀⠀⠀
-			//	⠀⠀⠀⣠⠟⠀⠘⠷⠶⠶⠶⠾⠉⢳⡄⠀⠀⠀⠀⠀⣧⣿⠀⠀⠀⠀⠀
-			//	⠀⠀⣰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣤⣤⣤⣤⣤⣿⢿⣄⠀⠀⠀⠀
-			//	⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⠀⠀⠀⠀⠀⠀⠙⣷⡴⠶⣦
-			//	⠀⠀⢱⡀⠀⠉⠉⠀⠀⠀⠀⠛⠃⠀⢠⡟⠀⠀⠀⢀⣀⣠⣤⠿⠞⠛⠋
-			//	⣠⠾⠋⠙⣶⣤⣤⣤⣤⣤⣀⣠⣤⣾⣿⠴⠶⠚⠋⠉⠁⠀⠀⠀⠀⠀⠀
-			//	⠛⠒⠛⠉⠉⠀⠀⠀⣴⠟⢃⡴⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-			//	⠀⠀⠀⠀⠀⠀⠀⠀⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-			if (this.getDescription().getVersion().equals(version)) {
-				getLogger().info("There is not a new update available.");
-			} else {
-				getLogger().info("There is a new update available.");
-				getLogger().info("Current version: " + getDescription().getVersion());
-				getLogger().info("Latest version: " + version);
-				getLogger().info("Spigot: https://www.spigotmc.org/resources/anti-farm.99472/");
-			}
-		});
 	}
 
 	@Override

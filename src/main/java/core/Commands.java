@@ -32,11 +32,10 @@ public class Commands implements CommandExecutor {
 				}
 			}
 		}
-		sender.sendMessage(ChatColor.GREEN + "[AntiFarm] Anti AFK farm blocker plugin.");
-		sender.sendMessage(ChatColor.GREEN + "[AntiFarm] Author: " + plugin.getDescription().getAuthors().toString());
-		sender.sendMessage(ChatColor.GREEN + "[AntiFarm] Version: " + plugin.getDescription().getVersion().toString());
-		sender.sendMessage(ChatColor.GREEN + "[AntiFarm] Thanks for using my plugin :)");
-		sender.sendMessage(ChatColor.GREEN + "[AntiFarm] Spigot: https://www.spigotmc.org/resources/anti-farm.99472/");
+		sender.sendMessage(ChatColor.GREEN + "[AntiFarmReloaded] AntiFarmReloaded");
+		sender.sendMessage(ChatColor.GREEN + "[AntiFarmReloaded] Author: " + plugin.getDescription().getAuthors().toString());
+		sender.sendMessage(ChatColor.GREEN + "[AntiFarmReloaded] Version: " + plugin.getDescription().getVersion().toString());
+		sender.sendMessage(ChatColor.YELLOW + "[AntiFarmReloaded] Please check for any recent updates");
 		return false;
 	}
 
