@@ -41,7 +41,7 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 	private AntiCactusFarm antiCactusFarm;
 	private AntiBarteringFarm antiBarteringFarm;
 	private AntiGrowth antiGrowth;
-	private AntiSnowballFarm AntiSnowballFarm;
+	private AntiSnowballFarm antiSnowballFarm;
 	@Override
 	public void onEnable() {
 
