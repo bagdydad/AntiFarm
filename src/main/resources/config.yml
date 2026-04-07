@@ -1,9 +1,9 @@
-# AntiFarm plugin configuration file.
+# AntiFarmReloaded plugin configuration file.
 
 # General settings.
 settings:
    # Prefix to be used in messages to players.
-   prefix: "&a[AntiFarm]&r "
+   prefix: "&a[AntiFarmReloaded]&r "
    # Send plugin stats to bstats.
    bstats: true
    # Check for plugin updates.
