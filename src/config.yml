@@ -99,6 +99,8 @@ farms-settings:
    prevent-enderman-harvesting-farms: true
    # Prevents planting on a block of land that has not reached the full water level.
    prevent-waterless-farms: true
+   # Prevents planting on farmland with light level below 8.
+   prevent-lightless-farms: true
    # Prevents the snowman from leaving snow trail on the ground.
    prevent-snowball-farms: true
    # Prevents foxes from dropping sweet berries to the ground.
@@ -111,12 +113,6 @@ farms-settings:
    prevent-dripstone-farms: true
    # Prevents infinity lava with dripstone.
    prevent-infinity-lava: true
-
-# prevent dispensers and droppers from dropping gold ingot in nether
-prevent-bartering-farm:
-   enable: true
-   # when set to true piglins are not allowed to pick up gold from ground so you have to manually hand them now (sparxie laugh effect would be great in here))
-   disable-on-ground-gold-picking: false
 
 # If dispenser is looking at a farm block, it will be prevented from throwing items in the "blocked-item-list".
 anti-dispenser:

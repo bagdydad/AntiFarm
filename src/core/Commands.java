@@ -26,7 +26,6 @@ public class Commands implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("reload")) {
 					config.reload("config");
 					spawners.reload("spawners");
-					plugin.reloadListeners();
 					sender.sendMessage(ChatColor.GREEN + "[AntiFarm] Configuration file reloaded!");
 					return true;
 				}
