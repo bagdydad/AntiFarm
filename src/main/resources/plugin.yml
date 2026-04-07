@@ -2,7 +2,7 @@ name: AntiFarmReloaded
 version: $version
 author: [sillycorn, oTuin]
 main: core.AntiFarmPlugin
-api-version: 1.19
-description: Multipurpose AFK farm blocker.
+api-version: 1.21
+description: Multipurpose AFK farm blocker Reloaded.
 commands:
    antifarm:

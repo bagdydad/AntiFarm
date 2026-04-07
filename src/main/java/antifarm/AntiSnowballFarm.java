@@ -1,5 +1,7 @@
 package antifarm;
 
+import configuration.Configuration;
+import core.AntiFarmPlugin;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -7,29 +9,31 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.EntityBlockFormEvent;
 
-import configuration.Configuration;
-import core.AntiFarmPlugin;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AntiSnowballFarm implements Listener {
+    private final AntiFarmPlugin plugin;
+    private boolean isEnabled;
+    private Set<String> disabledWorlds;
 
-	private final Configuration config;
+    public AntiSnowballFarm(AntiFarmPlugin plugin) {
+        this.plugin = plugin;
+        reloadConf();
+    }
 
-	public AntiSnowballFarm(AntiFarmPlugin plugin) {
-		this.config = plugin.getConfig();
-	}
+    public void reloadConf() {
+        Configuration config = plugin.getConfig();
+        this.isEnabled = config.getBoolean("farms-settings.prevent-snowball-farms", true);
+        this.disabledWorlds = new HashSet<>(config.getStringList("settings.disabled-worlds"));
+    }
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	private void onEntityBlockForm(EntityBlockFormEvent event) {
-
-		if (config.getStringList("settings.disabled-worlds").contains(event.getBlock().getWorld().getName())) return;
-
-		if (event.isCancelled() || event.getEntity() == null) return;
-		if (!event.getEntity().getType().equals(EntityType.SNOWMAN)) return;
-		if (!event.getNewState().getType().equals(Material.SNOW)) return;
-		if (!config.getBoolean("farms-settings.prevent-snowball-farms", true)) return;
-
-		event.setCancelled(true);
-
-	}
-
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityBlockForm(EntityBlockFormEvent event) {
+        if (!isEnabled) return;
+        if (event.getEntity() == null || event.getEntity().getType() != EntityType.SNOW_GOLEM) return;
+        if (event.getNewState().getType() != Material.SNOW) return;
+        if (disabledWorlds.contains(event.getBlock().getWorld().getName())) return;
+        event.setCancelled(true);
+    }
 }
