@@ -1,3 +1,4 @@
+/* should be checked
 package antifarm;
 
 import org.bukkit.Material;
@@ -82,3 +83,4 @@ public class AntiStringDupe implements Listener {
 	}
 
 }
+*/

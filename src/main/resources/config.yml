@@ -118,6 +118,12 @@ prevent-bartering-farm:
    # when set to true piglins are not allowed to pick up gold from ground so you have to manually hand them now (sparxie laugh effect would be great in here))
    disable-on-ground-gold-picking: false
 
+growth:
+   prevent-growth: true
+   # prevent growth of blocks e.g CACTUS BAMBOO KELP etc etc
+   prevent-growth-of:
+      - POINTED_DRIPSTONE
+
 # If dispenser is looking at a farm block, it will be prevented from throwing items in the "blocked-item-list".
 anti-dispenser:
    # Enable/Disable option.
