@@ -14,11 +14,14 @@ import java.util.Set;
 
 public class AntiSnowballFarm implements Listener {
     private final AntiFarmPlugin plugin;
+    private final EntityType snowGolemType;
+
     private boolean isEnabled;
     private Set<String> disabledWorlds;
 
     public AntiSnowballFarm(AntiFarmPlugin plugin) {
         this.plugin = plugin;
+        this.snowGolemType = getSnowGolemEntityType();
         reloadConf();
     }
 
@@ -31,9 +34,17 @@ public class AntiSnowballFarm implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityBlockForm(EntityBlockFormEvent event) {
         if (!isEnabled) return;
-        if (event.getEntity() == null || event.getEntity().getType() != EntityType.SNOW_GOLEM) return;
+        if (event.getEntity() == null || event.getEntity().getType() != snowGolemType) return;
         if (event.getNewState().getType() != Material.SNOW) return;
         if (disabledWorlds.contains(event.getBlock().getWorld().getName())) return;
         event.setCancelled(true);
+    }
+
+    private EntityType getSnowGolemEntityType() {
+        try {
+            return EntityType.valueOf("SNOW_GOLEM");
+        } catch (IllegalArgumentException e) {
+            return EntityType.valueOf("SNOWMAN");
+        }
     }
 }
