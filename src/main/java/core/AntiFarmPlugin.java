@@ -41,20 +41,22 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 	private AntiCactusFarm antiCactusFarm;
 	private AntiBarteringFarm antiBarteringFarm;
 	private AntiGrowth antiGrowth;
+	private AntiSnowballFarm AntiSnowballFarm;
 	@Override
 	public void onEnable() {
 
 		config = new Configuration("config", this);
 		spawners = new Configuration("spawners", this);
 		antiFishFarm = new AntiFishFarm(this);
-		AntiDispenser = new antiDispenser(this);
+		antiDispenser = new AntiDispenser(this);
 		antiCactusFarm = new AntiCactusFarm(this);
 		antiBarteringFarm = new AntiBarteringFarm(this);
 		antiGrowth = new AntiGrowth(this);
+		antiSnowballFarm = new AntiSnowballFarm(this);
 		registerEvents(this, new AntiPistonFarm(this), new AntiVillagerFarm(this), new AntiWaterFarm(this), antiCactusFarm,
 				new AntiEndermanFarm(this), new AntiVillagerBreed(this), new AntiMobFarm(this),
 				antiDispenser, antiFishFarm, new AntiMobSpawner(this),
-				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), new AntiSnowballFarm(this),
+				new AntiVillagerTransform(this), new AntiVillagerTarget(this), new AntiVillageGuard(this), antiSnowballFarm,
 				new AntiRaidFarm(this), new AntiBerryFarm(this), new AntiZeroTickFarm(this), antiGrowth,
 				new AntiFroglightFarm(this), new AntiVillagerCareer(this), new AntiVillagerTrade(this),
 				new AntiChickenEggFarm(this), new AntiCowMilk(this), new AntiLavaFarm(this), antiBarteringFarm);
@@ -88,5 +90,6 @@ public class AntiFarmPlugin extends JavaPlugin implements Listener {
 		antiCactusFarm.reloadConf();
 		antiBarteringFarm.reloadConf();
 		antiGrowth.reloadConf();
+		antiSnowballFarm.reloadConf();
 	}
 }
